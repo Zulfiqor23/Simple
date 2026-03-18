@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         tg.expand();
         tg.ready();
     }
+    
+    // Load persisted contact info
+    const savedName = localStorage.getItem('garderob_cust_name');
+    const savedPhone = localStorage.getItem('garderob_cust_phone');
+    if (savedName) document.getElementById('formName').value = savedName;
+    if (savedPhone) document.getElementById('formPhone').value = savedPhone;
+
     renderCatalog();
     updateCartUI();
     
@@ -19,6 +26,28 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('closeCartBtn').onclick = () => document.body.classList.remove('cart-open');
     document.getElementById('cartOverlay').onclick = () => document.body.classList.remove('cart-open');
     document.getElementById('sendOrderBtn').onclick = handleOrderSubmit;
+
+    // Phone Formatting
+    const phoneInput = document.getElementById('formPhone');
+    phoneInput.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/\D/g, ''); // digit only
+        if (!val.startsWith('998')) val = '998' + val;
+        val = val.slice(0, 12); // max 12 digits
+
+        let formatted = '+';
+        if (val.length > 0) formatted += val.substring(0, 3); // +998
+        if (val.length > 3) formatted += ' ' + val.substring(3, 5); // 90
+        if (val.length > 5) formatted += ' ' + val.substring(5, 8); // 123
+        if (val.length > 8) formatted += '-' + val.substring(8, 10); // 45
+        if (val.length > 10) formatted += '-' + val.substring(10, 12); // 67
+        
+        e.target.value = formatted;
+        localStorage.setItem('garderob_cust_phone', formatted);
+    });
+
+    document.getElementById('formName').addEventListener('input', (e) => {
+        localStorage.setItem('garderob_cust_name', e.target.value);
+    });
 });
 
 // ===== CATALOG RENDERING =====
@@ -127,6 +156,13 @@ function saveCart() {
 }
 
 // ===== ORDER SUBMISSION =====
+function escapeHTML(str) {
+    if (!str) return "";
+    return str.replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+    })[m]);
+}
+
 async function handleOrderSubmit() {
     if (cart.length === 0) {
         alert("Savat bo'sh!");
@@ -151,18 +187,18 @@ async function handleOrderSubmit() {
         // Build message
         let message = `🆕 <b>YANGI GARDEROB BUYURTMASI</b>\n`;
         message += `🆔 Buyurtma ID: <code>${orderId}</code>\n\n`;
-        message += `👤 <b>Mijoz:</b> ${name}\n`;
-        message += `📞 <b>Tel:</b> ${phone}\n`;
+        message += `👤 <b>Mijoz:</b> ${escapeHTML(name)}\n`;
+        message += `📞 <b>Tel:</b> ${escapeHTML(phone)}\n`;
         
         const senderUser = tg?.initDataUnsafe?.user;
         if (senderUser) {
-            const contactLabel = senderUser.username ? `@${senderUser.username}` : senderUser.first_name;
-            message += `🔹 <b>Telegram:</b> <a href="tg://user?id=${senderUser.id}">${contactLabel}</a>\n`;
+            const contactLabel = senderUser.username ? `@${senderUser.username}` : (senderUser.first_name || "Mijoz");
+            message += `🔹 <b>Telegram:</b> <a href="tg://user?id=${senderUser.id}">${escapeHTML(contactLabel)}</a>\n`;
         }
         
         message += `\n📦 <b>Buyurtma tarkibi:</b>\n`;
         cart.forEach((item, idx) => {
-            message += `${idx + 1}. ${item.name} x ${item.quantity} dona - <i>${(item.price * item.quantity).toLocaleString()} so'm</i>\n`;
+            message += `${idx + 1}. ${escapeHTML(item.name)} x ${item.quantity} dona - <i>${(item.price * item.quantity).toLocaleString()} so'm</i>\n`;
         });
         
         message += `\n💰 <b>JAMI: ${total.toLocaleString()} so'm</b>`;
