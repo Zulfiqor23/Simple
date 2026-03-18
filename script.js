@@ -212,6 +212,24 @@ function getSummaryRows() {
     return rows;
 }
 
+function buildMessageText() {
+    const rows = getSummaryRows();
+    let t = '📐 BAZIS MEBELSHIK — TEXNIK TOPSHIRIQ\n\n';
+    rows.filter(([, v]) => v && v !== '—')
+        .forEach(([l, v]) => t += `${l}: ${v}\n`);
+    const notes = document.getElementById('fNotes').value;
+    if (notes) t += `\nIzoh: ${notes}`;
+    const barter = document.getElementById('fBarter')?.value;
+    if (barter) t += `\nAyirboshlash: ${barter}`;
+
+    // File info
+    const fileCount = getAllFiles().length;
+    if (fileCount > 0) {
+        t += `\n\n📎 ${fileCount} ta fayl ilova qilingan (alohida yuboriladi)`;
+    }
+    return t;
+}
+
 // ===== TELEGRAM WEB APP INIT =====
 const tg = window.Telegram.WebApp;
 tg.expand(); // Opens web app in full height
