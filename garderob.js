@@ -178,7 +178,10 @@ async function handleOrderSubmit() {
             })
         });
 
-        if (!adminRes.ok) throw new Error("Botga yuborishda xatolik!");
+        if (!adminRes.ok) {
+            const errData = await adminRes.json();
+            throw new Error(`Telegram Error: ${errData.description || adminRes.statusText}`);
+        }
 
         // Send to User
         const senderId = tg?.initDataUnsafe?.user?.id;
