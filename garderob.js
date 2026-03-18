@@ -190,7 +190,7 @@ async function handleOrderSubmit() {
         let message = `🆕 <b>YANGI GARDEROB BUYURTMASI</b>\n`;
         message += `🆔 Buyurtma ID: <code>${orderId}</code>\n\n`;
         message += `👤 <b>Mijoz:</b> ${escapeHTML(name)}\n`;
-        message += `📞 <b>Tel:</b> ${escapeHTML(phone)}\n`;
+        message += `📞 <b>Tel:</b> <a href="tel:${phone.replace(/\s+/g, '')}">${escapeHTML(phone)}</a>\n`;
         
         const senderUser = tg?.initDataUnsafe?.user;
         const senderId = senderUser?.id;
@@ -198,6 +198,7 @@ async function handleOrderSubmit() {
         if (senderUser) {
             const contactLabel = senderUser.username ? `@${senderUser.username}` : (senderUser.first_name || "Mijoz");
             message += `🔹 <b>Telegram:</b> <a href="tg://user?id=${senderId}">${escapeHTML(contactLabel)}</a>\n`;
+            message += `🔗 <b>Bog'lanish:</b> <a href="https://t.me/${senderUser.username || ''}">Profil ochish</a>\n`;
         }
         
         message += `\n📦 <b>Buyurtma tarkibi:</b>\n`;

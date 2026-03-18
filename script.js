@@ -245,7 +245,7 @@ tg.expand(); // Opens web app in full height
 
 // DIIQQAT: Shu yerda O'z bot tokeningizni va lichka (Chat ID) ni yozasiz!
 // Bularni faqat siz bilasiz, xavfsiz holatda.
-const BOT_TOKEN = '8641387756:AAHquNwhbeSD2_0aKTAOp58LMKmnT5c3-ZY'; 
+const BOT_TOKEN = '8353264846:AAHlGhCK7z7iNG8cwOCt6Sff6gDEcr3VSvM'; 
 const ADMIN_CHAT_ID = '6690357035'; // @userinfobot dan olasiz
 
 // ===== MAIN BUTTON INIT =====
