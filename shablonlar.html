@@ -175,6 +175,68 @@
             color: var(--text-muted);
             text-align: center;
         }
+
+        /* Added utility classes to remove inline styles */
+        .mt-5 { margin-top: 5px; }
+        .mt-10 { margin-top: 10px; }
+        .mt-15 { margin-top: 15px; }
+        .mt-20 { margin-top: 20px; }
+        .mt-25 { margin-top: 25px; }
+        .mb-0 { margin-bottom: 0 !important; }
+        .mb-5 { margin-bottom: 5px; }
+        .mb-10 { margin-bottom: 10px; }
+        .mb-15 { margin-bottom: 15px; }
+        .pt-15 { padding-top: 15px; }
+        .py-10 { padding: 10px 0; }
+        .p-10 { padding: 10px; }
+
+        .w-40 { width: 40px; }
+        .w-60 { width: 60px; }
+        .w-150 { width: 150px; }
+        .w-200 { width: 200px; }
+        .w-15p { width: 15%; }
+        .w-20p { width: 20%; }
+        .w-25p { width: 25%; }
+        .w-40p { width: 40%; }
+        .w-55p { width: 55%; }
+        .w-70p { width: 70%; }
+        .w-80p { width: 80%; }
+        .w-100p { width: 100%; }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .font-bold { font-weight: bold; }
+        .font-600 { font-weight: 600; }
+        .text-11 { font-size: 11px; }
+        .text-12 { font-size: 12px; }
+        .text-13 { font-size: 13px; }
+
+        .rounded-full { border-radius: 50%; }
+        .flex-none { flex: none; }
+        .flex-between { justify-content: space-between; }
+        .flex-center { justify-content: center; }
+        .align-end { align-items: flex-end; }
+        .gap-40 { gap: 40px; }
+        .border-none { border: none !important; }
+        .bg-white { background-color: white !important; }
+
+        .min-h-25 { min-height: 25px; }
+        .min-h-80 { min-height: 80px; }
+        .border-dotted { border-bottom: 1px dotted #ccc; }
+        .border-solid-ccc { border: 1px solid #ccc; }
+        .border-dashed-green { border-top: 1px dashed #bbf7d0; }
+
+        .alert-danger { background-color: #ffeaea; border-color: #ffc2c2; }
+        .text-danger { color: #b91c1c; }
+        .alert-success { background-color: #f0fdf4; border-color: #bbf7d0; }
+        .title-success { background-color: #dcfce7; color: #166534; }
+        .text-success { color: #166534; }
+        .bg-light-gray { background-color: #f8f9fa; }
+        .alert-info { background-color: #f0f9ff; border-color: #bae6fd; }
+        .alert-gray { background-color: #f1f5f9; }
+        .alert-purple { background-color: #fdf4ff; border-color: #f5d0fe; }
+        .title-purple { background-color: #fae8ff; color: #86198f; }
+        .text-purple { color: #86198f; }
     </style>
 </head>
 <body>
@@ -206,8 +268,8 @@
                 <div class="card-content">
                     <div class="check-item"><div class="checkbox-box"></div> O'lchamlar chizmaga mos (±1mm).</div>
                     <div class="check-item"><div class="checkbox-box"></div> Qirqim toza, siniqlar (skol) yo'q.</div>
-                    <div class="check-item" style="margin-top: 15px;">Detal soni: <span class="input-line"></span> ta.</div>
-                    <div class="check-item">F.I.Sh / Imzo: <span class="input-line" style="width:150px;"></span></div>
+                    <div class="check-item mt-15">Detal soni: <span class="input-line"></span> ta.</div>
+                    <div class="check-item">F.I.Sh / Imzo: <span class="input-line w-150"></span></div>
                 </div>
             </div>
 
@@ -216,8 +278,8 @@
                 <div class="card-content">
                     <div class="check-item"><div class="checkbox-box"></div> Kromka tekis yopishtirildi.</div>
                     <div class="check-item"><div class="checkbox-box"></div> Yelim qoldiqlari tozalandi.</div>
-                    <div class="check-item" style="margin-top: 15px;">Detal soni: <span class="input-line"></span> ta.</div>
-                    <div class="check-item">F.I.Sh / Imzo: <span class="input-line" style="width:150px;"></span></div>
+                    <div class="check-item mt-15">Detal soni: <span class="input-line"></span> ta.</div>
+                    <div class="check-item">F.I.Sh / Imzo: <span class="input-line w-150"></span></div>
                 </div>
             </div>
 
@@ -226,8 +288,8 @@
                 <div class="card-content">
                     <div class="check-item"><div class="checkbox-box"></div> Teshiklar chizmaga 100% mos.</div>
                     <div class="check-item"><div class="checkbox-box"></div> Furnitura oson tushishi tekshirildi.</div>
-                    <div class="check-item" style="margin-top: 15px;">Detal soni: <span class="input-line"></span> ta.</div>
-                    <div class="check-item">F.I.Sh / Imzo: <span class="input-line" style="width:150px;"></span></div>
+                    <div class="check-item mt-15">Detal soni: <span class="input-line"></span> ta.</div>
+                    <div class="check-item">F.I.Sh / Imzo: <span class="input-line w-150"></span></div>
                 </div>
             </div>
 
@@ -236,8 +298,8 @@
                 <div class="card-content">
                     <div class="check-item"><div class="checkbox-box"></div> Geometriya va burchaklar tekshirildi.</div>
                     <div class="check-item"><div class="checkbox-box"></div> Komplektatsiya (SAGA/STARAX) qilingan.</div>
-                    <div class="check-item" style="margin-top: 15px;">Qadoqlar (o'rin) soni: <span class="input-line"></span> ta.</div>
-                    <div class="check-item">Texnolog Imzo: <span class="input-line" style="width:150px;"></span></div>
+                    <div class="check-item mt-15">Qadoqlar (o'rin) soni: <span class="input-line"></span> ta.</div>
+                    <div class="check-item">Texnolog Imzo: <span class="input-line w-150"></span></div>
                 </div>
             </div>
         </div>
@@ -306,8 +368,8 @@
             </div>
         </div>
         
-        <div class="info-panel" style="margin-top: 15px; background-color: #ffeaea; border-color: #ffc2c2;">
-            <div class="info-item" style="color: #b91c1c;"><strong>Kritik eslatma:</strong> Ushbu 29 band (va moslashtirilgan stop-listlar) yopilmaguncha birinchi savdoni amalga oshirish TAQIQLANADI. Tizim odamlarni boshqarishi shart!</div>
+        <div class="info-panel mt-15 alert-danger">
+            <div class="info-item text-danger"><strong>Kritik eslatma:</strong> Ushbu 29 band (va moslashtirilgan stop-listlar) yopilmaguncha birinchi savdoni amalga oshirish TAQIQLANADI. Tizim odamlarni boshqarishi shart!</div>
         </div>
     </div>
 
@@ -332,7 +394,7 @@
             <div class="info-item"><strong>Sanasi:</strong> ___/___/202__</div>
         </div>
 
-        <div class="card" style="margin-top: 20px;">
+        <div class="card mt-20">
             <div class="card-title">🛠 L3 - MONTAJCHI NAZORATI (Montajdan oldin va keyin)</div>
             <div class="card-content">
                 <div class="check-item"><div class="checkbox-box"></div> [OLDIN] Obyektga yetib kelindi, karobkalar soni tekshirildi. "DO" (oldin) rasmi tushirildi va tizimga yuborildi.</div>
@@ -340,32 +402,32 @@
                 <div class="check-item"><div class="checkbox-box"></div> [JARAYON] Uydagi boshqa jihozlar va devorlarga shikast yetkazilmadi.</div>
                 <div class="check-item"><div class="checkbox-box"></div> [KEYIN] Atrof va ish joyi toza yig'ishtirildi. Chiqindilar olib chiqib ketishga tayyorlandi.</div>
                 <div class="check-item"><div class="checkbox-box"></div> [KEYIN] Tayyor bo'lgan mebelning "POSLE" (keyin) sifatli rasmi tizimga yuklandi.</div>
-                <div class="check-item" style="margin-top: 15px;">Montajchi imzosi: <span class="input-line" style="width:200px;"></span></div>
+                <div class="check-item mt-15">Montajchi imzosi: <span class="input-line w-200"></span></div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 20px; background-color: #f0fdf4; border-color: #bbf7d0;">
-            <div class="card-title" style="background-color: #dcfce7; color: #166534;">🤝 L4 - MIJOZ QABULI (OTK-Mijoz)</div>
+        <div class="card mt-20 alert-success">
+            <div class="card-title title-success">🤝 L4 - MIJOZ QABULI (OTK-Mijoz)</div>
             <div class="card-content">
-                <p style="font-size: 13px; margin-bottom: 15px; color: #166534;">Hurmatli mijoz, iltimos mebelni qabul qilib olayotganda quyidagi bandlarga ishonch hosil qiling:</p>
+                <p class="text-13 mb-15 text-success">Hurmatli mijoz, iltimos mebelni qabul qilib olayotganda quyidagi bandlarga ishonch hosil qiling:</p>
                 <div class="check-item"><div class="checkbox-box"></div> Mebelning yuzasida qirilgan, tirnalgan yoki nuqsonli joylar YO'Q.</div>
                 <div class="check-item"><div class="checkbox-box"></div> Barcha eshiklar, tortmalar va mexanizmlar bemalol, silliq va shovqinsiz ishlayapti.</div>
                 <div class="check-item"><div class="checkbox-box"></div> O'lchamlar, ranglar va materiallar aynan shartnomada kelishilganidek (900mm modul).</div>
                 <div class="check-item"><div class="checkbox-box"></div> Ish xonasi/hudud xodimlar tomonidan toza qoldirildi.</div>
                 
-                <div style="margin-top: 25px; border-top: 1px dashed #bbf7d0; padding-top: 15px;">
-                    <p style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">Qaror:</p>
-                    <div class="check-item"><div class="checkbox-box" style="border-radius: 50%;"></div> Men buyurtmani hech qanday e'tirozlarsiz qabul qildim. (To'lovning qolgan qismi tasdiqlanadi).</div>
-                    <div class="check-item"><div class="checkbox-box" style="border-radius: 50%;"></div> Menda quyidagi e'tiroz va tuzatishlar qoldi: <span class="input-line" style="width: 80%;"></span></div>
-                    <div class="check-item"><span class="input-line" style="width: 100%;"></span></div>
+                <div class="mt-25 border-dashed-green pt-15">
+                    <p class="text-13 font-600 mb-10">Qaror:</p>
+                    <div class="check-item"><div class="checkbox-box rounded-full"></div> Men buyurtmani hech qanday e'tirozlarsiz qabul qildim. (To'lovning qolgan qismi tasdiqlanadi).</div>
+                    <div class="check-item"><div class="checkbox-box rounded-full"></div> Menda quyidagi e'tiroz va tuzatishlar qoldi: <span class="input-line w-80p"></span></div>
+                    <div class="check-item"><span class="input-line w-100p"></span></div>
                 </div>
 
-                <div class="info-panel" style="margin-top: 25px; background: white; border: none; align-items: flex-end;">
+                <div class="info-panel mt-25 bg-white border-none align-end">
                     <div class="info-item">
-                        Mijoz F.I.Sh: <span class="input-line" style="width:150px;"></span><br><br>
-                        Imzo: <span class="input-line" style="width:150px;"></span>
+                        Mijoz F.I.Sh: <span class="input-line w-150"></span><br><br>
+                        Imzo: <span class="input-line w-150"></span>
                     </div>
-                    <div class="info-item" style="text-align: right; color: var(--text-muted); font-size: 11px;">
+                    <div class="info-item text-right text-muted text-11">
                         Ushbu hujjat imzolangandan so'ng 1 yillik kafolat kuchi boshlanadi.<br>NPS so'rovnomasi Telegram/SMS orqali yuboriladi.
                     </div>
                 </div>
@@ -397,10 +459,10 @@
         <table class="table-full">
             <thead>
                 <tr>
-                    <th style="width: 15%;">Kun</th>
-                    <th style="width: 55%;">O'rganilishi kerak bo'lgan mavzu / Amaliyot</th>
-                    <th style="width: 15%;">Mentordan<br>Tasdiq (✔️)</th>
-                    <th style="width: 15%;">Xodimdan<br>Tasdiq (✔️)</th>
+                    <th class="w-15p">Kun</th>
+                    <th class="w-55p">O'rganilishi kerak bo'lgan mavzu / Amaliyot</th>
+                    <th class="w-15p">Mentordan<br>Tasdiq (✔️)</th>
+                    <th class="w-15p">Xodimdan<br>Tasdiq (✔️)</th>
                 </tr>
             </thead>
             <tbody>
@@ -411,8 +473,8 @@
                         <div class="check-item"><div class="checkbox-box"></div> Toyota Kaizen qoidalari va Andon (To'xtatish) tizimi.</div>
                         <div class="check-item"><div class="checkbox-box"></div> Jamoa qoidalari, intizom va komunikatsiya (Notion/TG).</div>
                     </td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
                 </tr>
                 <tr>
                     <td><strong>2-KUN</strong><br><em>Mahsulot & Modul</em></td>
@@ -421,8 +483,8 @@
                         <div class="check-item"><div class="checkbox-box"></div> SAGA va STARAX furnituralari haqida ma'lumot.</div>
                         <div class="check-item"><div class="checkbox-box"></div> Oldingi ishlangan mebellar (keyslar) bilan tanishuv.</div>
                     </td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
                 </tr>
                 <tr>
                     <td><strong>3-KUN</strong><br><em>Jarayon L1-L4</em></td>
@@ -431,8 +493,8 @@
                         <div class="check-item"><div class="checkbox-box"></div> Nuqson (Brak) turlari va sifat nazorati standartlari (±1mm).</div>
                         <div class="check-item"><div class="checkbox-box"></div> Mijoz bilan muomala qilish (B2C, SLA 10 kun).</div>
                     </td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
                 </tr>
                 <tr>
                     <td><strong>4-KUN</strong><br><em>Vazifaga kirishish</em></td>
@@ -441,23 +503,23 @@
                         <div class="check-item"><div class="checkbox-box"></div> Ish joyini tartibga keltirish (Shaxsiy kompyuter / uskuna).</div>
                         <div class="check-item"><div class="checkbox-box"></div> Mentor kuzatuvi ostida bitta joriy vazifani bajarib ko'rish.</div>
                     </td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
                 </tr>
-                <tr style="background-color: #f8f9fa;">
+                <tr class="bg-light-gray">
                     <td><strong>5-KUN</strong><br><em>Imtihon & Qabul</em></td>
                     <td>
                         <div class="check-item bold"><div class="checkbox-box"></div> YAKUNIY TEST (Minimum 80% o'tish balli).</div>
                         <div class="check-item"><div class="checkbox-box"></div> Mentorning xulosasi va o'zlashtirishini muhokama qilish.</div>
                         <div class="check-item"><div class="checkbox-box"></div> Rasmiy ishga qabul qilish yechimi (Trial period boshlanishi).</div>
                     </td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
-                    <td style="text-align: center;">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
+                    <td class="text-center">[ &nbsp; &nbsp; ]</td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="info-panel" style="justify-content: space-between;">
+        <div class="info-panel flex-between">
             <div class="info-item">Test natijasi (Ball): <span class="input-line"></span> %</div>
             <div class="info-item">Qaror: [ ] Qabul qilindi &nbsp; [ ] Qayta o'qiydi &nbsp; [ ] Rad etildi</div>
         </div>
@@ -492,7 +554,7 @@
                     <div class="check-item"><div class="checkbox-box"></div> Dasturlar bilan ishlash (Excel, Notion, Bazis Mebelshik).</div>
                     <div class="check-item"><div class="checkbox-box"></div> Mebel ishlab chiqarish yoki arxitektura bo'yicha tushuncha.</div>
                     <br>
-                    <p style="font-size:12px; font-weight:bold; margin-bottom: 5px;">Baho (1 dan 10 gacha): <span class="input-line" style="width:40px;"></span> / 10</p>
+                    <p class="text-12 font-bold mb-5">Baho (1 dan 10 gacha): <span class="input-line w-40"></span> / 10</p>
                 </div>
             </div>
 
@@ -503,34 +565,34 @@
                     <div class="check-item"><div class="checkbox-box"></div> Andon qoidasiga moslik (Xatosini tan ola biladi).</div>
                     <div class="check-item"><div class="checkbox-box"></div> O'zgarishlarga tez moslashuvchanlik va o'rganish tezligi.</div>
                     <br>
-                    <p style="font-size:12px; font-weight:bold; margin-bottom: 5px;">Baho (1 dan 10 gacha): <span class="input-line" style="width:40px;"></span> / 10</p>
+                    <p class="text-12 font-bold mb-5">Baho (1 dan 10 gacha): <span class="input-line w-40"></span> / 10</p>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 20px;">
+        <div class="card mt-20">
             <div class="card-title">🎙 Suhbat Savollari va Analizi (STAR usuli)</div>
             <div class="card-content">
-                <div style="margin-bottom: 15px;">
-                    <p style="font-size:13px; font-weight:bold;">1. Qiyin muammoga duch kelganda uni qanday hal qilgansiz? (Misol keltiring)</p>
-                    <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0; min-height: 25px;"></p>
+                <div class="mb-15">
+                    <p class="text-13 font-bold">1. Qiyin muammoga duch kelganda uni qanday hal qilgansiz? (Misol keltiring)</p>
+                    <p class="text-12 border-dotted py-10 min-h-25"></p>
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <p style="font-size:13px; font-weight:bold;">2. Bir xil va takroriy (rutin) ishlarni bajarish sizga qanday ta'sir qiladi?</p>
-                    <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0; min-height: 25px;"></p>
+                <div class="mb-15">
+                    <p class="text-13 font-bold">2. Bir xil va takroriy (rutin) ishlarni bajarish sizga qanday ta'sir qiladi?</p>
+                    <p class="text-12 border-dotted py-10 min-h-25"></p>
                 </div>
                 <div>
-                    <p style="font-size:13px; font-weight:bold;">3. Bizning kompaniyamiz haqida nimalarni bilasiz yoki tushundingiz?</p>
-                    <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0; min-height: 25px;"></p>
+                    <p class="text-13 font-bold">3. Bizning kompaniyamiz haqida nimalarni bilasiz yoki tushundingiz?</p>
+                    <p class="text-12 border-dotted py-10 min-h-25"></p>
                 </div>
             </div>
         </div>
 
-        <div class="info-panel" style="margin-top: 20px; text-align: center; justify-content: center; gap: 40px; background-color: #f1f5f9;">
-            <div class="info-item" style="flex: none;"><strong>CEO/HR QARORI:</strong></div>
-            <div class="info-item" style="flex: none;"><div class="checkbox-box"></div> Muvofiqlangan (Keyingi bosqich)</div>
-            <div class="info-item" style="flex: none;"><div class="checkbox-box"></div> Ehtiyotkorlik bilan sinovga</div>
-            <div class="info-item" style="flex: none;"><div class="checkbox-box"></div> Rad etish</div>
+        <div class="info-panel mt-20 text-center flex-center gap-40 alert-gray">
+            <div class="info-item flex-none"><strong>CEO/HR QARORI:</strong></div>
+            <div class="info-item flex-none"><div class="checkbox-box"></div> Muvofiqlangan (Keyingi bosqich)</div>
+            <div class="info-item flex-none"><div class="checkbox-box"></div> Ehtiyotkorlik bilan sinovga</div>
+            <div class="info-item flex-none"><div class="checkbox-box"></div> Rad etish</div>
         </div>
     </div>
 
@@ -552,13 +614,13 @@
             <div class="info-item"><strong>Hafta:</strong> ____ - haftaning ____ sanalari oralig'i, 202__ yil</div>
         </div>
 
-        <table class="table-full" style="font-size: 12px;">
+        <table class="table-full text-12">
             <thead>
                 <tr>
-                    <th style="width: 15%;">Sana / Vaqt</th>
-                    <th style="width: 40%;">Bajarilayotgan Aniq Ish (Masalan: "Mijoz bilan tortishish", "Detal o'lchash")</th>
-                    <th style="width: 25%;">Bu ishni kim qilsa bo'ladi? (CEO, Assistent, OTK, Dastur, Yo'q qilish)</th>
-                    <th style="width: 20%;">Delegatsiya Qarori</th>
+                    <th class="w-15p">Sana / Vaqt</th>
+                    <th class="w-40p">Bajarilayotgan Aniq Ish (Masalan: "Mijoz bilan tortishish", "Detal o'lchash")</th>
+                    <th class="w-25p">Bu ishni kim qilsa bo'ladi? (CEO, Assistent, OTK, Dastur, Yo'q qilish)</th>
+                    <th class="w-20p">Delegatsiya Qarori</th>
                 </tr>
             </thead>
             <tbody>
@@ -576,17 +638,17 @@
             </tbody>
         </table>
 
-        <div class="card" style="margin-top: 20px;">
+        <div class="card mt-20">
             <div class="card-title">📊 HAFTALIK XULOSA VA ASOSIY MUAMMOLAR</div>
             <div class="card-content">
-                <p style="font-size:13px; font-weight:bold; margin-bottom: 10px;">Vaqtimning eng katta qismini olgan ahamiyatsiz (delegatsiya qilish mumkin bo'lgan) vazifalar:</p>
-                <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0; min-height: 25px;">1.</p>
-                <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0; min-height: 25px;">2.</p>
-                <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0; min-height: 25px;">3.</p>
+                <p class="text-13 font-bold mb-10">Vaqtimning eng katta qismini olgan ahamiyatsiz (delegatsiya qilish mumkin bo'lgan) vazifalar:</p>
+                <p class="text-12 border-dotted py-10 min-h-25">1.</p>
+                <p class="text-12 border-dotted py-10 min-h-25">2.</p>
+                <p class="text-12 border-dotted py-10 min-h-25">3.</p>
                 
                 <p style="font-size:13px; font-weight:bold; margin-top: 15px; margin-bottom: 10px;">Assistentga (yoki boshqa xodimga) zudlik bilan o'tkaziladigan vazifalar (Delegatsiya rejasi):</p>
-                <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0;">- </p>
-                <p style="font-size:12px; border-bottom: 1px dotted #ccc; padding: 10px 0;">- </p>
+                <p class="text-12 border-dotted py-10">- </p>
+                <p class="text-12 border-dotted py-10">- </p>
             </div>
         </div>
         <div class="footer">
@@ -617,26 +679,26 @@
             <div class="card">
                 <div class="card-title">⚙️ SAGA & STARAX Furnituralari</div>
                 <div class="card-content">
-                    <p style="font-size: 11px; margin-bottom: 10px;">Qizil chiziq (Alert!) ushbudan kamaysa Dastur CEOga xabar beradi.</p>
-                    <table class="table-full" style="margin-bottom: 0;">
+                    <p class="text-11 mb-10">Qizil chiziq (Alert!) ushbudan kamaysa Dastur CEOga xabar beradi.</p>
+                    <table class="table-full mb-0">
                         <tr>
                             <th>Nomlanishi</th>
-                            <th style="width:60px;">Qoldiq</th>
+                            <th class="w-60">Qoldiq</th>
                             <th>Norma (Limit)</th>
                         </tr>
                         <tr>
                             <td>SAGA Komplektlari</td>
-                            <td><span class="input-line" style="width: 40px;"></span></td>
-                            <td><span style="color:var(--text-muted);">25 tadan ko'pmi?</span> [ ✔/✘ ]</td>
+                            <td><span class="input-line w-40"></span></td>
+                            <td><span class="text-muted">25 tadan ko'pmi?</span> [ ✔/✘ ]</td>
                         </tr>
                         <tr>
                             <td>STARAX Aksessuarlari</td>
-                            <td><span class="input-line" style="width: 40px;"></span></td>
-                            <td><span style="color:var(--text-muted);">2 tadan ko'pmi?</span> [ ✔/✘ ]</td>
+                            <td><span class="input-line w-40"></span></td>
+                            <td><span class="text-muted">2 tadan ko'pmi?</span> [ ✔/✘ ]</td>
                         </tr>
                         <tr>
                             <td>Profil qoldig'i (m)</td>
-                            <td><span class="input-line" style="width: 40px;"></span></td>
+                            <td><span class="input-line w-40"></span></td>
                             <td>-</td>
                         </tr>
                     </table>
@@ -646,25 +708,25 @@
             <div class="card">
                 <div class="card-title">🧩 Material va Kromka</div>
                 <div class="card-content">
-                    <table class="table-full" style="margin-bottom: 0;">
+                    <table class="table-full mb-0">
                         <tr>
                             <th>Nomlanishi</th>
-                            <th style="width:60px;">Qoldiq</th>
+                            <th class="w-60">Qoldiq</th>
                             <th>Limit / Status</th>
                         </tr>
                         <tr>
                             <td>Oq LDSP (Varaq)</td>
-                            <td><span class="input-line" style="width: 40px;"></span></td>
+                            <td><span class="input-line w-40"></span></td>
                             <td>[ ✔/✘ ]</td>
                         </tr>
                         <tr>
                             <td>Rangli Egger (Varaq)</td>
-                            <td><span class="input-line" style="width: 40px;"></span></td>
+                            <td><span class="input-line w-40"></span></td>
                             <td>[ ✔/✘ ]</td>
                         </tr>
                         <tr>
                             <td>1 mm Kromka (m/bobina)</td>
-                            <td><span class="input-line" style="width: 40px;"></span></td>
+                            <td><span class="input-line w-40"></span></td>
                             <td>[ ✔/✘ ]</td>
                         </tr>
                     </table>
@@ -672,11 +734,11 @@
             </div>
         </div>
 
-        <div class="card" style="margin-top: 10px;">
+        <div class="card mt-10">
             <div class="card-title">⚠️ Zaxira to'ldirish (Qisqa muddatli ehtiyojlar)</div>
             <div class="card-content">
                 <div class="check-item"><div class="checkbox-box"></div> Buyurtma berish ro'yxati shakllantirildi va Ta'minotchiga jo'natildi.</div>
-                <div class="check-item" style="margin-top: 10px;">Kamchilik bo'yicha izoh: <span class="input-line" style="width: 70%;"></span></div>
+                <div class="check-item mt-10">Kamchilik bo'yicha izoh: <span class="input-line w-70p"></span></div>
             </div>
         </div>
     </div>
@@ -695,7 +757,7 @@
             </div>
         </div>
 
-        <div class="info-panel" style="background-color: #f0f9ff; border-color: #bae6fd;">
+        <div class="info-panel alert-info">
             <div class="info-item"><strong>Kimga:</strong> _____________________</div>
             <div class="info-item"><strong>Kimdan (Topshiruvchi):</strong> _____________________</div>
             <div class="info-item"><strong>Dedlayn:</strong> ___/___/202__ Soat: __:__</div>
@@ -705,15 +767,15 @@
             <div class="card-title">🎯 Topshiriqning aniq maqsad va mazmuni (S.M.A.R.T. uslubida)</div>
             <div class="card-content">
                 <p style="font-size:13px; font-weight:bold; margin-bottom: 5px;">Nima qilinishi kerak?</p>
-                <div style="min-height: 80px; border: 1px solid #ccc; padding: 10px; font-size: 13px; background: white; margin-bottom: 15px;">
+                <div class="min-h-80 border-solid-ccc p-10 text-13 bg-white mb-15">
                     <!-- Matn joyi -->
                 </div>
 
                 <p style="font-size:13px; font-weight:bold; margin-bottom: 5px;">Kutilayotgan yakuniy Natija QANDAY ko'rinishda bo'ladi?</p>
-                <div class="check-item"><div class="checkbox-box" style="border-radius:50%"></div> Fayl hisoboti (Excel/PDF)</div>
-                <div class="check-item"><div class="checkbox-box" style="border-radius:50%"></div> Amaliy ish bajarilib rasmga yuklanadi</div>
-                <div class="check-item"><div class="checkbox-box" style="border-radius:50%"></div> O'zgartirish kiritiladi (Saytga/kodga)</div>
-                <div class="check-item" style="margin-top:5px;">Boshqa natija turi: <span class="input-line" style="width: 200px;"></span></div>
+                <div class="check-item"><div class="checkbox-box rounded-full"></div> Fayl hisoboti (Excel/PDF)</div>
+                <div class="check-item"><div class="checkbox-box rounded-full"></div> Amaliy ish bajarilib rasmga yuklanadi</div>
+                <div class="check-item"><div class="checkbox-box rounded-full"></div> O'zgartirish kiritiladi (Saytga/kodga)</div>
+                <div class="check-item mt-5">Boshqa natija turi: <span class="input-line" style="width: 200px;"></span></div>
             </div>
         </div>
 
@@ -724,17 +786,17 @@
                     <div class="check-item"><div class="checkbox-box"></div> Topshiriq tushunarli. Savollarim yo'q.</div>
                     <div class="check-item"><div class="checkbox-box"></div> Resurs yetarli (Vaqt, pul, ma'lumot).</div>
                     <br>
-                    <p style="font-size: 13px;">Imzo (Xodim): <span class="input-line"></span></p>
+                    <p class="text-13">Imzo (Xodim): <span class="input-line"></span></p>
                 </div>
             </div>
 
-            <div class="card" style="background-color: #fdf4ff; border-color: #f5d0fe;">
-                <div class="card-title" style="background-color: #fae8ff; color: #86198f;">🏁 Topshiriqni Yopish (Nazorat)</div>
+            <div class="card alert-purple">
+                <div class="card-title title-purple">🏁 Topshiriqni Yopish (Nazorat)</div>
                 <div class="card-content">
                     <div class="check-item"><div class="checkbox-box"></div> Vazifa roppa-rosa aytilgan muddatda va aniqlikda bajarildi.</div>
-                    <p style="font-size: 12px; margin-top: 5px; color: #86198f;">Agar yo'q bo'lsa, xatolik sababi qidiriladi ("Nega?" - 5 marta).</p>
+                    <p class="text-12 mt-5 text-purple">Agar yo'q bo'lsa, xatolik sababi qidiriladi ("Nega?" - 5 marta).</p>
                     <br>
-                    <p style="font-size: 13px;">Tekshirdi Imzo (CEO/Mentor): <span class="input-line"></span></p>
+                    <p class="text-13">Tekshirdi Imzo (CEO/Mentor): <span class="input-line"></span></p>
                 </div>
             </div>
         </div>

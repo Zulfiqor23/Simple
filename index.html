@@ -3,1084 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Simple - Mebelchi Kalkulyatori</title>
-    <!-- Dependencies -->
+    <title>Bazis Mebelshik — Texnik Topshiriq</title>
+    <meta name="description" content="Bazis Mebelshik Texnik Topshiriqlarni to'ldirish formasi">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <style>
-        :root {
-            --primary: #6c5ce7;
-            --primary-hover: #5849c4;
-            --secondary: #a29bfe;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.82);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-main: #2d3436;
-            --text-sub: #636e72;
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            --radius: 18px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: var(--text-main);
-            padding: 15px 12px 140px 12px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        header h1 {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
-
-        /* Glass Cards */
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 18px;
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-sub);
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        /* Side-by-side Selectors */
-        .triple-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--text-sub);
-        }
-
-        select, input.text-input {
-            width: 100%;
-            padding: 10px 8px;
-            border-radius: 10px;
-            border: 1px solid rgba(0,0,0,0.08);
-            background: white;
-            font-size: 13px;
-            color: var(--text-main);
-            appearance: none;
-            outline: none;
-        }
-
-        select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%236c5ce7' d='M6 8.825L1.175 4 2.238 2.938 6 6.7 9.763 2.938 10.825 4z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-        }
-
-        /* Texture Grid */
-        .texture-popover {
-            display: none;
-            position: absolute;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            padding: 10px;
-            z-index: 100;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            width: 220px;
-            top: 40px;
-            left: 0;
-        }
-
-        .texture-popover.show {
-            display: grid;
-        }
-
-        .texture-swatch {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            background-size: cover;
-        }
-
-        .texture-swatch.active {
-            border-color: var(--primary);
-        }
-
-        /* Input Boxes */
-        .dimensions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .input-box {
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            border: 2px solid transparent;
-            font-size: 16px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .input-box.active {
-            border-color: var(--primary);
-            background: #f8f9ff;
-        }
-
-        .input-box .unit {
-            font-size: 11px;
-            color: var(--text-sub);
-            font-weight: 400;
-        }
-
-        /* Proportional Visualizer */
-        .visualizer-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 0;
-            position: relative;
-        }
-
-        .part-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            max-width: 240px;
-            width: 100%;
-        }
-
-        #proportional-part {
-            background: #edf2f7;
-            border: 2px dashed #cbd5e0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .edge-line {
-            position: absolute;
-            background: rgba(0,0,0,0.08);
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .edge-line.active {
-            background: var(--primary);
-            box-shadow: 0 0 12px var(--primary);
-        }
-
-        /* Responsive Edge lines */
-        .e-w1 { top: -14px; left: 0; width: 100%; height: 10px; border-radius: 5px; } /* Tepa */
-        .e-w2 { bottom: -14px; left: 0; width: 100%; height: 10px; border-radius: 5px; } /* Past */
-        .e-l1 { left: -14px; top: 0; height: 100%; width: 10px; border-radius: 5px; } /* Chap */
-        .e-l2 { right: -14px; top: 0; height: 100%; width: 10px; border-radius: 5px; } /* O'ng */
-
-        .dim-label {
-            position: absolute;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-sub);
-            pointer-events: none;
-        }
-
-        .l-w1 { top: -28px; }
-        .l-w2 { bottom: -28px; }
-        .l-l1 { left: -45px; transform: rotate(-90deg); }
-        .l-l2 { right: -45px; transform: rotate(90deg); }
-
-        /* Corner Cut Interface */
-        .corner-node {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background: white;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            cursor: pointer;
-            z-index: 20;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .node-tl { top: -9px; left: -9px; }
-        .node-tr { top: -9px; right: -9px; }
-        .node-bl { bottom: -9px; left: -9px; }
-        .node-br { bottom: -9px; right: -9px; }
-
-        /* List Items */
-        .list-item {
-            background: white;
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .item-main { flex: 1; }
-        .item-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-        .item-subtitle { font-size: 11px; color: var(--text-sub); line-height: 1.4; }
-
-        .item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
-            background: #f1f2f6;
-            color: var(--text-sub);
-            transition: 0.2s;
-        }
-
-        .btn-edit { color: #f39c12; }
-        .btn-copy { color: #3498db; }
-        .btn-delete { color: #e74c3c; }
-
-        .icon-btn:active { transform: scale(0.9); }
-
-        /* Numpad */
-        #numpad-overlay {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            background: #ffffff;
-            z-index: 2000;
-            transition: 0.3s;
-            border-radius: 24px 24px 0 0;
-            padding: 20px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
-        }
-
-        #numpad-overlay.show { bottom: 0; }
-
-        .numpad-btn {
-            background: #f3f5f9;
-            border: none;
-            border-radius: 14px;
-            padding: 18px;
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .numpad-btn:active { background: #e0e4eb; }
-
-        /* Export Bar */
-        .action-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px 12px 30px 12px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-
-        .btn-main {
-            padding: 14px;
-            border-radius: 14px;
-            border: none;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.2s;
-        }
-
-        .btn-yuklash { background: #2f3542; color: white; }
-        .btn-yuborish { background: #0088cc; color: white; }
-        .btn-add { background: var(--primary); color: white; width: 100%; margin-top: 15px; grid-column: span 2; }
-
-        /* Modal for Export Settings */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal.show { display: flex; }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            padding: 24px;
-            position: relative;
-        }
-
-        .format-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .format-btn {
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .format-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 5px;
-            border-radius: 4px;
-            background: #f1f2f6;
-            margin-right: 3px;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .badge.active { background: var(--primary); color: white; }
-
-        /* Cut Options Modal */
-        #cut-modal .form-group { margin-bottom: 12px; }
-        .cut-type-toggle {
-            display: flex;
-            background: #f1f2f6;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-        .cut-type-toggle button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .cut-type-toggle button.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        #page-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.2);
-            backdrop-filter: blur(2px);
-            display: none;
-            z-index: 1500;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <div class="logo-icon">📐</div>
+            <h1>Bazis Mebelshik</h1>
+            <p class="header-sub">Texnik Topshiriqlarni to'ldirish</p>
+        </div>
+    </header>
 
-    <div class="container">
-        <header>
-            <h1>Simple</h1>
-            <p style="font-size: 12px; color: var(--text-sub)">Mebelchi Kalkulyatori</p>
-        </header>
+    <!-- Progress -->
+    <nav class="progress-nav">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-dots">
+            <button class="dot active" data-step="1"><span>1</span></button>
+            <button class="dot" data-step="2"><span>2</span></button>
+            <button class="dot" data-step="3"><span>3</span></button>
+            <button class="dot" data-step="4"><span>4</span></button>
+            <button class="dot" data-step="5"><span>5</span></button>
+        </div>
+        <div class="progress-labels">
+            <span class="active">Ma'lumot</span>
+            <span>Loyiha</span>
+            <span>Tafsilot</span>
+            <span>Fayllar</span>
+            <span>Topshiriq</span>
+        </div>
+    </nav>
 
-        <!-- Material Selection Card -->
-        <div class="card">
-            <span class="section-title">Material Sozlamalari</span>
-            <div class="triple-grid">
-                <div class="form-group">
-                    <label>Material</label>
-                    <select id="sel-material" onchange="checkManual('material')">
-                        <option value="LDSP 16 mm">LDSP 16 mm</option>
-                        <option value="LDSP 18 mm">LDSP 18 mm</option>
-                        <option value="LMDF 16 mm">LMDF 16 mm</option>
-                        <option value="LMDF 18 mm">LMDF 18 mm</option>
-                        <option value="Akrill 18 mm">Akrill 18 mm</option>
-                        <option value="XDF 3 mm">XDF 3 mm</option>
-                        <option value="manual">Boshqa...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>List Formati</label>
-                    <select id="sel-format" onchange="checkManual('format')">
-                        <option value="2800x2070">2800x2070</option>
-                        <option value="2750x1830">2750x1830</option>
-                        <option value="2800x1220">2800x1220</option>
-                        <option value="2440x1220">2440x1220</option>
-                        <option value="manual">Boshqa...</option>
-                    </select>
-                </div>
-                <div class="form-group" style="position: relative;">
-                    <label>Textura</label>
-                    <div id="texture-display" onclick="toggleTexture()" style="width:100%; height:32px; border-radius:8px; border:1px solid #ddd; background:#eee; cursor:pointer;"></div>
-                    <div id="texture-popover" class="texture-popover">
-                        <!-- JS injected -->
+    <main class="app-main">
+        <form id="orderForm" novalidate>
+
+            <!-- ========== STEP 1: BUYURTMACHI ========== -->
+            <section class="step active" data-step="1">
+                <div class="card glass-card">
+                    <div class="card-header"><span class="card-icon">👤</span><h2>Buyurtmachi ma'lumotlari</h2></div>
+                    <div class="field">
+                        <label>Ism, Familiya <span class="req">*</span></label>
+                        <input type="text" id="fName" placeholder="Ismingizni kiriting" required>
                     </div>
-                </div>
-            </div>
-            
-            <div id="manual-inputs" style="display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-                <input type="text" id="manual-material" class="text-input" placeholder="Material nomi...">
-                <input type="text" id="manual-format" class="text-input" placeholder="Format (Masalan: 3000x1500)">
-            </div>
-
-            <div class="triple-grid" style="margin-top: 10px;">
-                <div class="form-group">
-                    <label>Kromka o'lchami</label>
-                    <select id="sel-edge">
-                        <option value="1*19 mm">1*19 mm</option>
-                        <option value="1*21 mm">1*21 mm</option>
-                        <option value="1*35 mm">1*35 mm</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Yelim turi</label>
-                    <select id="sel-glue">
-                        <option value="Pur kley">Pur kley</option>
-                        <option value="Eva kley">Eva kley</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <!-- Placeholder -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Part Editor Card -->
-        <div class="card">
-            <span class="section-title">Detal O'lchamlari</span>
-            <div class="dimensions-grid">
-                <div class="form-group">
-                    <label>Eni (mm)</label>
-                    <div id="box-w" class="input-box" onclick="openNumpad('w')">
-                        <span id="val-w">0</span>
-                        <span class="unit">mm</span>
+                    <div class="field">
+                        <label>Telefon raqam <span class="req">*</span></label>
+                        <input type="tel" id="fPhone" placeholder="+998 XX XXX XX XX" required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Bo'yi (mm)</label>
-                    <div id="box-h" class="input-box" onclick="openNumpad('h')">
-                        <span id="val-h">0</span>
-                        <span class="unit">mm</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="visualizer-container">
-                <div class="part-container">
-                    <div id="proportional-part">
-                        <span id="part-dims-center" style="font-size: 10px; color: #a0aec0;"></span>
-                        
-                        <!-- Edge lines -->
-                        <div id="ev-w1" class="edge-line e-w1" onclick="toggleEdge('W1')"></div>
-                        <div id="ev-w2" class="edge-line e-w2" onclick="toggleEdge('W2')"></div>
-                        <div id="ev-l1" class="edge-line e-l1" onclick="toggleEdge('L1')"></div>
-                        <div id="ev-l2" class="edge-line e-l2" onclick="toggleEdge('L2')"></div>
-
-                        <!-- Labels -->
-                        <div class="dim-label l-w1" id="lbl-w1">W1: 0</div>
-                        <div class="dim-label l-w2" id="lbl-w2">W2: 0</div>
-                        <div class="dim-label l-l1" id="lbl-l1">L1: 0</div>
-                        <div class="dim-label l-l2" id="lbl-l2">L2: 0</div>
-
-                        <!-- Corner Nodes -->
-                        <div class="corner-node node-tl" onclick="openCutModal('tl')">1</div>
-                        <div class="corner-node node-tr" onclick="openCutModal('tr')">2</div>
-                        <div class="corner-node node-bl" onclick="openCutModal('bl')">3</div>
-                        <div class="corner-node node-br" onclick="openCutModal('br')">4</div>
-                    </div>
-                </div>
-                <p style="font-size: 11px; color: var(--text-sub); margin-top: 35px;">Tegishli tomonni tanlang va burchaklarni bosing</p>
-            </div>
-
-            <button class="btn-main btn-add" id="btn-submit" onclick="savePart()">
-                <i class="fas fa-plus"></i> Ro'yxatga qo'shish
-            </button>
-        </div>
-
-        <!-- List Section -->
-        <h3 style="font-size: 16px; margin: 20px 0 10px 5px;">Barcha detallar</h3>
-        <div id="parts-list-container">
-            <!-- List items go here -->
-        </div>
-    </div>
-
-    <!-- Action Bar -->
-    <div class="action-bar">
-        <button class="btn-main btn-yuklash" onclick="showExportModal('download')">
-            <i class="fas fa-download"></i> Yuklash
-        </button>
-        <button class="btn-main btn-yuborish" onclick="showExportModal('send')">
-            <i class="fab fa-telegram-plane"></i> Yuborish
-        </button>
-    </div>
-
-    <!-- Modals -->
-    <div id="page-overlay"></div>
-
-    <!-- Export Modal -->
-    <div id="export-modal" class="modal">
-        <div class="modal-content">
-            <h3 id="export-title">Faylni yuklash</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-top: 5px;">Formatni tanlang:</p>
-            <div class="format-grid">
-                <button class="format-btn" onclick="setFormat('json')">JSON</button>
-                <button class="format-btn" onclick="setFormat('xlsx')">XLSX</button>
-                <button class="format-btn" onclick="setFormat('csv')">CSV</button>
-                <button class="format-btn" onclick="setFormat('xml')">XML</button>
-                <button class="format-btn" onclick="setFormat('txt')">TXT</button>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-main" style="flex:1; background: #f1f2f6; color: #636e72;" onclick="closeModals()">Bekor qilish</button>
-                <button class="btn-main primary" style="flex:1; background: var(--primary); color: white;" onclick="performExport()">Tasdiqlash</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Corner Cut Modal -->
-    <div id="cut-modal" class="modal">
-        <div class="modal-content">
-            <h3>Burchak kesimi (<span id="cut-corner-id"></span>)</h3>
-            <div class="cut-type-toggle">
-                <button id="cut-type-diag" onclick="setCutType('diag')" class="active">Diagonal</button>
-                <button id="cut-type-rect" onclick="setCutType('rect')">To'rtburchak</button>
-            </div>
-            <div class="form-group">
-                <label>X1 (mm) - Birinchi tomon bo'ylab</label>
-                <input type="number" id="cut-x1" class="text-input" value="0">
-            </div>
-            <div class="form-group">
-                <label>X2 (mm) - Ikkinchi tomon bo'ylab</label>
-                <input type="number" id="cut-x2" class="text-input" value="0">
-            </div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn-main" style="flex:1; background: #ff7675; color: white;" onclick="removeCut()">O'chirish</button>
-                <button class="btn-main" style="flex:1; background: var(--primary); color: white;" onclick="applyCut()">Saqlash</button>
-            </div>
-            <button onclick="closeModals()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 18px; color: #ccc;"><i class="fas fa-times"></i></button>
-        </div>
-    </div>
-
-    <!-- Numpad -->
-    <div id="numpad-overlay">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <span id="numpad-label" style="font-weight: 700; color: var(--primary);">0</span>
-            <button onclick="closeNumpad()" style="background: none; border: none; font-weight: 600; color: var(--text-sub);">Yopish</button>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-            <button class="numpad-btn" onclick="np('1')">1</button>
-            <button class="numpad-btn" onclick="np('2')">2</button>
-            <button class="numpad-btn" onclick="np('3')">3</button>
-            <button class="numpad-btn" onclick="np('4')">4</button>
-            <button class="numpad-btn" onclick="np('5')">5</button>
-            <button class="numpad-btn" onclick="np('6')">6</button>
-            <button class="numpad-btn" onclick="np('7')">7</button>
-            <button class="numpad-btn" onclick="np('8')">8</button>
-            <button class="numpad-btn" onclick="np('9')">9</button>
-            <button class="numpad-btn" onclick="np('C')" style="color: #e74c3c;">C</button>
-            <button class="numpad-btn" onclick="np('0')">0</button>
-            <button class="numpad-btn" onclick="np('B')"><i class="fas fa-backspace"></i></button>
-        </div>
-        <button class="btn-main btn-add" onclick="closeNumpad()" style="margin-top: 20px;">Tayyor</button>
-    </div>
-
-    <script>
-        // State
-        let parts = [];
-        let currentPart = {
-            id: null,
-            w: 0,
-            h: 0,
-            edges: { W1: false, W2: false, L1: false, L2: false },
-            cuts: {} // key: tl, tr, bl, br
-        };
-        let activeField = null;
-        let selectedExportMode = 'download';
-        let selectedExportFormat = 'json';
-        let currentCutCorner = null;
-        let currentCutType = 'diag';
-        
-        const textures = [
-            '#ffffff', '#f5e6ca', '#d2b48c', '#8b4513', '#a0522d',
-            '#556b2f', '#2f4f4f', '#708090', '#c0c0c0', '#4b5320'
-        ];
-        let selectedTextureIndex = 0;
-
-        // Init
-        window.onload = () => {
-            initTextures();
-            renderTexture();
-            loadStorage();
-            renderList();
-        };
-
-        function initTextures() {
-            const container = document.getElementById('texture-popover');
-            textures.forEach((t, i) => {
-                const div = document.createElement('div');
-                div.className = 'texture-swatch' + (i === 0 ? ' active' : '');
-                div.style.backgroundColor = t;
-                div.onclick = () => selectTexture(i);
-                container.appendChild(div);
-            });
-        }
-
-        function toggleTexture() {
-            document.getElementById('texture-popover').classList.toggle('show');
-        }
-
-        function selectTexture(i) {
-            selectedTextureIndex = i;
-            renderTexture();
-            toggleTexture();
-        }
-
-        function renderTexture() {
-            document.getElementById('texture-display').style.backgroundColor = textures[selectedTextureIndex];
-        }
-
-        function checkManual(type) {
-            const selM = document.getElementById('sel-material').value;
-            const selF = document.getElementById('sel-format').value;
-            const manualRow = document.getElementById('manual-inputs');
-            if (selM === 'manual' || selF === 'manual') {
-                manualRow.style.display = 'grid';
-            } else {
-                manualRow.style.display = 'none';
-            }
-        }
-
-        // Numpad
-        function openNumpad(field) {
-            activeField = field;
-            document.getElementById('box-w').classList.toggle('active', field === 'w');
-            document.getElementById('box-h').classList.toggle('active', field === 'h');
-            document.getElementById('numpad-overlay').classList.add('show');
-            document.getElementById('page-overlay').style.display = 'block';
-            document.getElementById('numpad-label').innerText = field === 'w' ? 'Eni (mm)' : 'Bo\'yi (mm)';
-        }
-
-        function np(key) {
-            let val = currentPart[activeField].toString();
-            if (key === 'C') val = '0';
-            else if (key === 'B') {
-                val = val.slice(0, -1);
-                if (val === '') val = '0';
-            } else {
-                if (val === '0') val = key;
-                else if (val.length < 5) val += key;
-            }
-            currentPart[activeField] = parseInt(val);
-            updatePartUI();
-        }
-
-        function closeNumpad() {
-            document.getElementById('numpad-overlay').classList.remove('show');
-            document.getElementById('page-overlay').style.display = 'none';
-            document.getElementById('box-w').classList.remove('active');
-            document.getElementById('box-h').classList.remove('active');
-        }
-
-        function updatePartUI() {
-            document.getElementById('val-w').innerText = currentPart.w;
-            document.getElementById('val-h').innerText = currentPart.h;
-            
-            const box = document.getElementById('proportional-part');
-            if (currentPart.w > 0 && currentPart.h > 0) {
-                // Calculate scale
-                const maxDim = 200;
-                let width, height;
-                if (currentPart.w > currentPart.h) {
-                    width = maxDim;
-                    height = (currentPart.h / currentPart.w) * maxDim;
-                } else {
-                    height = maxDim;
-                    width = (currentPart.w / currentPart.h) * maxDim;
-                }
-                box.style.width = width + 'px';
-                box.style.height = height + 'px';
-            } else {
-                box.style.width = '120px';
-                box.style.height = '120px';
-            }
-
-            // Labels
-            document.getElementById('lbl-w1').innerText = 'W1: ' + currentPart.w;
-            document.getElementById('lbl-w2').innerText = 'W2: ' + currentPart.w;
-            document.getElementById('lbl-l1').innerText = 'L1: ' + currentPart.h;
-            document.getElementById('lbl-l2').innerText = 'L2: ' + currentPart.h;
-
-            // Edge visuals
-            Object.keys(currentPart.edges).forEach(key => {
-                const el = document.getElementById('ev-' + key.toLowerCase());
-                el.classList.toggle('active', currentPart.edges[key]);
-            });
-
-            // Corner visuals
-            ['tl', 'tr', 'bl', 'br'].forEach(c => {
-                const el = document.querySelector('.node-' + c);
-                el.style.borderColor = currentPart.cuts[c] ? '#f1c40f' : '#6c5ce7';
-                el.style.backgroundColor = currentPart.cuts[c] ? '#fff9db' : 'white';
-            });
-        }
-
-        function toggleEdge(key) {
-            currentPart.edges[key] = !currentPart.edges[key];
-            updatePartUI();
-        }
-
-        // Corner Cuts
-        function openCutModal(corner) {
-            currentCutCorner = corner;
-            document.getElementById('cut-corner-id').innerText = corner.toUpperCase();
-            const existing = currentPart.cuts[corner];
-            if (existing) {
-                currentCutType = existing.type;
-                document.getElementById('cut-x1').value = existing.x1;
-                document.getElementById('cut-x2').value = existing.x2;
-            } else {
-                currentCutType = 'diag';
-                document.getElementById('cut-x1').value = 0;
-                document.getElementById('cut-x2').value = 0;
-            }
-            updateCutModalUI();
-            document.getElementById('cut-modal').classList.add('show');
-            document.getElementById('page-overlay').style.display = 'block';
-        }
-
-        function setCutType(type) {
-            currentCutType = type;
-            updateCutModalUI();
-        }
-
-        function updateCutModalUI() {
-            document.getElementById('cut-type-diag').classList.toggle('active', currentCutType === 'diag');
-            document.getElementById('cut-type-rect').classList.toggle('active', currentCutType === 'rect');
-        }
-
-        function applyCut() {
-            const x1 = parseInt(document.getElementById('cut-x1').value);
-            const x2 = parseInt(document.getElementById('cut-x2').value);
-            if (x1 > 0 || x2 > 0) {
-                currentPart.cuts[currentCutCorner] = { type: currentCutType, x1, x2 };
-            } else {
-                delete currentPart.cuts[currentCutCorner];
-            }
-            closeModals();
-            updatePartUI();
-        }
-
-        function removeCut() {
-            delete currentPart.cuts[currentCutCorner];
-            closeModals();
-            updatePartUI();
-        }
-
-        // List logic
-        function savePart() {
-            if (currentPart.w === 0 || currentPart.h === 0) {
-                alert('O\'lchamlarni kiriting!');
-                return;
-            }
-
-            const material = document.getElementById('sel-material').value === 'manual' ? 
-                document.getElementById('manual-material').value : document.getElementById('sel-material').value;
-            const format = document.getElementById('sel-format').value === 'manual' ? 
-                document.getElementById('manual-format').value : document.getElementById('sel-format').value;
-            
-            const partToSave = {
-                ...currentPart,
-                id: currentPart.id || Date.now(),
-                material,
-                format,
-                texture: textures[selectedTextureIndex],
-                edge: document.getElementById('sel-edge').value,
-                glue: document.getElementById('sel-glue').value
-            };
-
-            if (currentPart.id) {
-                const idx = parts.findIndex(p => p.id === currentPart.id);
-                parts[idx] = partToSave;
-            } else {
-                parts.push(partToSave);
-            }
-
-            resetEditor();
-            saveStorage();
-            renderList();
-        }
-
-        function resetEditor() {
-            currentPart = {
-                id: null,
-                w: 0,
-                h: 0,
-                edges: { W1: false, W2: false, L1: false, L2: false },
-                cuts: {}
-            };
-            updatePartUI();
-        }
-
-        function editPart(id) {
-            const p = parts.find(x => x.id === id);
-            currentPart = JSON.parse(JSON.stringify(p)); // deep copy
-            updatePartUI();
-            window.scrollTo({ top: 100, behavior: 'smooth' });
-        }
-
-        function copyPart(id) {
-            const p = parts.find(x => x.id === id);
-            const newP = JSON.parse(JSON.stringify(p));
-            newP.id = Date.now();
-            parts.push(newP);
-            saveStorage();
-            renderList();
-        }
-
-        function deletePart(id) {
-            if (confirm('O\'chirmoqchimisiz?')) {
-                parts = parts.filter(p => p.id !== id);
-                saveStorage();
-                renderList();
-            }
-        }
-
-        function renderList() {
-            const container = document.getElementById('parts-list-container');
-            container.innerHTML = parts.length === 0 ? '<p style="text-align:center; color:#ccc; padding:20px;">Hozircha o\'lchamlar yo\'q</p>' : '';
-            
-            parts.forEach(p => {
-                const el = document.createElement('div');
-                el.className = 'list-item';
-                
-                let edgeBadges = '';
-                if (p.edges.W1) edgeBadges += '<span class="badge active">W1</span>';
-                if (p.edges.W2) edgeBadges += '<span class="badge active">W2</span>';
-                if (p.edges.L1) edgeBadges += '<span class="badge active">L1</span>';
-                if (p.edges.L2) edgeBadges += '<span class="badge active">L2</span>';
-
-                let cutCount = Object.keys(p.cuts).length;
-                
-                el.innerHTML = `
-                    <div class="item-main">
-                        <div class="item-title">${p.w} x ${p.h} mm</div>
-                        <div class="item-subtitle">
-                            <b>${p.material}</b> (${p.format})<br>
-                            Kromka: ${p.edge} | ${p.glue}<br>
-                            ${edgeBadges} ${cutCount > 0 ? `<span class="badge" style="background:#f39c12; color:white;">${cutCount} kesik</span>` : ''}
+                    <div class="field">
+                        <label>Buyurtmadagi ro'li</label>
+                        <div class="chip-group" id="roleGroup">
+                            <button type="button" class="chip" data-val="Dizayner">🎨 Dizayner</button>
+                            <button type="button" class="chip" data-val="Mebelchi">🪑 Mebelchi</button>
+                            <button type="button" class="chip" data-val="Prorap">👷 Prorap</button>
+                            <button type="button" class="chip" data-val="Boshqa">📋 Boshqa</button>
                         </div>
                     </div>
-                    <div class="item-actions">
-                        <button class="icon-btn btn-edit" onclick="editPart(${p.id})"><i class="fas fa-edit"></i></button>
-                        <button class="icon-btn btn-copy" onclick="copyPart(${p.id})"><i class="fas fa-copy"></i></button>
-                        <button class="icon-btn btn-delete" onclick="deletePart(${p.id})"><i class="fas fa-trash"></i></button>
+                    <div class="field">
+                        <label>Mebel borasida tushunchasi</label>
+                        <div class="chip-group single" id="levelGroup">
+                            <button type="button" class="chip" data-val="Tushunmayman">😕 Tushunmayman</button>
+                            <button type="button" class="chip" data-val="Dizayner">🎨 Dizayner darajasida</button>
+                            <button type="button" class="chip" data-val="Ustanovshik">🔧 Ustanovshik darajasida</button>
+                            <button type="button" class="chip" data-val="Konstruktor">📐 Konstruktor darajasida</button>
+                        </div>
                     </div>
-                `;
-                container.appendChild(el);
-            });
-        }
+                </div>
+                <div class="nav-row"><div></div><button type="button" class="btn-primary" onclick="goNext()">Keyingisi →</button></div>
+            </section>
 
-        // Storage
-        function saveStorage() {
-            localStorage.setItem('simple_parts_v2', JSON.stringify(parts));
-        }
-        function loadStorage() {
-            const data = localStorage.getItem('simple_parts_v2');
-            if (data) parts = JSON.parse(data);
-        }
+            <!-- ========== STEP 2: LOYIHA ========== -->
+            <section class="step" data-step="2">
+                <div class="card glass-card">
+                    <div class="card-header"><span class="card-icon">🪑</span><h2>Loyiha</h2></div>
+                    <div class="field">
+                        <label>Mebel turi <span class="req">*</span></label>
+                        <div class="chip-group multi" id="mebelTypeGroup">
+                            <button type="button" class="chip" data-val="Krovat">🛏️ Krovat</button>
+                            <button type="button" class="chip" data-val="Oshxona">🍳 Oshxona</button>
+                            <button type="button" class="chip" data-val="Shkaf">🚪 Shkaf</button>
+                            <button type="button" class="chip" data-val="Tryumo">🪞 Tryumo</button>
+                            <button type="button" class="chip" data-val="Komod">🗄️ Komod</button>
+                            <button type="button" class="chip" data-val="Dekorativ panel">🖼️ Dekor panel</button>
+                            <button type="button" class="chip" data-val="Parta">📚 Parta</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Buyurtma turi</label>
+                        <div class="chip-group single" id="orderTypeGroup">
+                            <button type="button" class="chip" data-val="Individual">👤 Individual (yakka shaxs)</button>
+                            <button type="button" class="chip" data-val="Konveyr">🏭 Konveyr ishlab chiqarish</button>
+                            <button type="button" class="chip" data-val="3D loyiha">🎮 3D loyiha uchun</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Natija (bir nechtasini tanlash mumkin)</label>
+                        <div class="chip-group multi price-chips" id="resultGroup">
+                            <button type="button" class="chip" data-val="Bazis model"><span>📐 Bazis model</span><small>13 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="Smeta"><span>📄 Smeta hujjatlari</span><small>2 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="3D dizayn"><span>🎨 3D dizayn</span><small>1 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="KDT fayllar"><span>🖥️ KDT stanok fayllar</span><small>1 000 so'm/kv.m</small></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-row">
+                    <button type="button" class="btn-ghost" onclick="goPrev()">← Orqaga</button>
+                    <button type="button" class="btn-primary" onclick="goNext()">Keyingisi →</button>
+                </div>
+            </section>
 
-        // Export System
-        function showExportModal(mode) {
-            selectedExportMode = mode;
-            document.getElementById('export-title').innerText = mode === 'download' ? 'Faylni yuklash' : 'Telegramga yuborish';
-            document.getElementById('export-modal').classList.add('show');
-            document.getElementById('page-overlay').style.display = 'block';
-        }
+            <!-- ========== STEP 3: TAFSILOTLAR ========== -->
+            <section class="step" data-step="3">
+                <div class="card glass-card">
+                    <div class="card-header"><span class="card-icon">⚙️</span><h2>Tafsilotlar</h2></div>
 
-        function setFormat(fmt) {
-            selectedExportFormat = fmt;
-            document.querySelectorAll('.format-btn').forEach(b => {
-                b.classList.toggle('active', b.innerText.toLowerCase() === fmt);
-            });
-        }
+                    <div class="field">
+                        <label>Korpus / Fasad materiali</label>
+                        <div class="chip-group multi" id="materialGroup">
+                            <button type="button" class="chip" data-val="LDSP 16mm">ЛДСП 16mm</button>
+                            <button type="button" class="chip" data-val="LDSP 18mm">ЛДСП 18mm</button>
+                            <button type="button" class="chip" data-val="LMDF 16mm">ЛМДФ 16mm</button>
+                            <button type="button" class="chip" data-val="LMDF 18mm">ЛМДФ 18mm</button>
+                            <button type="button" class="chip" data-val="Akril 16mm">Akril 16mm</button>
+                        </div>
+                    </div>
 
-        function closeModals() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
-            document.getElementById('page-overlay').style.display = 'none';
-        }
+                    <!-- Conditional: Dekorativ panel -->
+                    <div class="field cond-field" id="condDekor" style="display:none">
+                        <label>🖼️ Dekorativ panel materiali</label>
+                        <input type="text" id="fDekorMat" placeholder="Dekorativ panel materiali...">
+                    </div>
 
-        function performExport() {
-            if (parts.length === 0) {
-                alert('Ro\'yxat bo\'sh!');
-                return;
-            }
+                    <!-- Conditional: Oshxona - Stoleshnitsa -->
+                    <div class="field cond-field" id="condStol" style="display:none">
+                        <label>🍳 Stoleshnitsa turi</label>
+                        <input type="text" id="fStolType" placeholder="Stoleshnitsa turi va qalinligi...">
+                    </div>
 
-            const data = formatData(selectedExportFormat);
-            
-            if (selectedExportMode === 'download') {
-                downloadFile(data, `Simple_Export.${selectedExportFormat}`, selectedExportFormat);
-            } else {
-                sendToTelegram(data, selectedExportFormat);
-            }
-            closeModals();
-        }
+                    <div class="field">
+                        <label>Kromka turi</label>
+                        <div class="chip-group single" id="kromkaGroup">
+                            <button type="button" class="chip" data-val="Kromka bor">✅ Kromka bor</button>
+                            <button type="button" class="chip" data-val="Kromka yo'q">❌ Kromka yo'q</button>
+                        </div>
+                    </div>
+                    <div class="field" id="kromkaStyleField" style="display:none">
+                        <label>Kromka bosish usuli</label>
+                        <div class="chip-group single" id="kromkaStyleGroup">
+                            <button type="button" class="chip" data-val="Ko'rinadigan tomon">👁️ Faqat ko'rinadigan tomon</button>
+                            <button type="button" class="chip" data-val="Standart">📏 Standartga muvofiq</button>
+                        </div>
+                    </div>
 
-        function formatData(fmt) {
-            // Transform internal object to a cleaner list for export
-            const cleanList = parts.map(p => ({
-                Eni: p.w,
-                Boyi: p.h,
-                Material: p.material,
-                Format: p.format,
-                Kromka: p.edge,
-                Yelim: p.glue,
-                L1: p.edges.L1 ? 1 : 0,
-                L2: p.edges.L2 ? 1 : 0,
-                W1: p.edges.W1 ? 1 : 0,
-                W2: p.edges.W2 ? 1 : 0,
-                Kesimlar: JSON.stringify(p.cuts)
-            }));
+                    <div class="field">
+                        <label>Mahkamlovchi furnitura</label>
+                        <div class="chip-group single" id="fastenerGroup">
+                            <button type="button" class="chip" data-val="Yevrovint">🔩 Yevrovint</button>
+                            <button type="button" class="chip" data-val="Ekssentrik shkant">⚙️ Ekssentrik shkant</button>
+                        </div>
+                    </div>
 
-            if (fmt === 'json') return JSON.stringify(parts, null, 2);
-            if (fmt === 'csv') {
-                const headers = Object.keys(cleanList[0]).join(',');
-                const rows = cleanList.map(obj => Object.values(obj).join(',')).join('\n');
-                return `${headers}\n${rows}`;
-            }
-            if (fmt === 'txt') {
-                let txt = "SIMPLE MEBEL HASOBOTI\n\n";
-                cleanList.forEach((p, i) => {
-                    txt += `${i+1}. ${p.Eni}x${p.Boyi} | ${p.Material} | Edges: ${p.L1}${p.L2}${p.W1}${p.W2}\n`;
-                });
-                return txt;
-            }
-            if (fmt === 'xml') {
-                let xml = '<?xml version="1.0" encoding="UTF-8"?><parts>';
-                cleanList.forEach(p => {
-                    xml += '<part>';
-                    Object.entries(p).forEach(([k,v]) => xml += `<${k}>${v}</${k}>`);
-                    xml += '</part>';
-                });
-                xml += '</parts>';
-                return xml;
-            }
-            if (fmt === 'xlsx') {
-                const ws = XLSX.utils.json_to_sheet(cleanList);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Parts");
-                return wb;
-            }
-        }
+                    <div class="field">
+                        <label>Petlya turi</label>
+                        <input type="text" id="fPetlya" placeholder="Masalan: Blum clip-top, oddiy...">
+                    </div>
+                    <div class="field">
+                        <label>Ochilish mexanizmlari</label>
+                        <input type="text" id="fMexanizm" placeholder="Masalan: Gaz lift, tortma napravlyayushiy...">
+                    </div>
+                    <div class="field">
+                        <label>Nojka (oyoq)</label>
+                        <input type="text" id="fNojka" placeholder="Masalan: Reguliruemiy, dekorativ...">
+                    </div>
+                    <div class="field">
+                        <label>Ruchka (Tutqichlar)</label>
+                        <input type="text" id="fRuchka" placeholder="Masalan: Profil ruchka, oddiy, integrirovanniy...">
+                    </div>
 
-        function downloadFile(content, filename, fmt) {
-            if (fmt === 'xlsx') {
-                XLSX.writeFile(content, filename);
-                return;
-            }
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-        }
+                    <!-- Conditional: Krovat -->
+                    <div class="field cond-field" id="condMatras" style="display:none">
+                        <label>🛏️ Matras o'lchami</label>
+                        <input type="text" id="fMatras" placeholder="Masalan: 160x200, 180x200...">
+                    </div>
 
-        function sendToTelegram(data, fmt) {
-            let text = "🚀 *Simple Mebel - Yangi Buyurtma*\n\n";
-            if (fmt === 'xlsx' || fmt === 'json' || fmt === 'xml') {
-                text += `Fayl formati: ${fmt.toUpperCase()}\n\n(Eslatma: Brauzer orqali faqat matn yuborish mumkin, to'liq faylni 'Yuklash' orqali oling)`;
-                // For demonstration, we'll send a summary if it's a file format
-                parts.forEach((p, i) => {
-                    text += `\n${i+1}. ${p.w}x${p.h} (${p.material})`;
-                });
-            } else {
-                text += data;
-            }
+                    <!-- Conditional: Oshxona - devorga osish -->
+                    <div class="field cond-field" id="condDevor" style="display:none">
+                        <label>🍳 Devorga osish usuli</label>
+                        <input type="text" id="fDevor" placeholder="Masalan: shin reyka, dubel anker...">
+                    </div>
 
-            const url = "https://t.me/share/url?text=" + encodeURIComponent(text);
-            window.open(url, '_blank');
-        }
-    </script>
+                    <div class="field">
+                        <label>Tortma (yaslik) sisteyasi</label>
+                        <input type="text" id="fTortma" placeholder="Masalan: Teleskopik, tandem, roldangli...">
+                    </div>
+                    <div class="field">
+                        <label>Profil sistema (shkaf bo'lsa)</label>
+                        <input type="text" id="fProfil" placeholder="Masalan: Alyuminiy profil, S-400...">
+                    </div>
+                </div>
+                <div class="nav-row">
+                    <button type="button" class="btn-ghost" onclick="goPrev()">← Orqaga</button>
+                    <button type="button" class="btn-primary" onclick="goNext()">Keyingisi →</button>
+                </div>
+            </section>
+
+            <!-- ========== STEP 4: FAYLLAR ========== -->
+            <section class="step" data-step="4">
+                <div class="card glass-card">
+                    <div class="card-header"><span class="card-icon">📎</span><h2>Fayllar yuklash</h2></div>
+
+                    <div class="upload-box" data-key="roomPhotos">
+                        <div class="upload-inner">
+                            <span>📸</span><p>Xona rasmi</p>
+                            <small>Rasmni tanlang yoki tashlang</small>
+                            <input type="file" multiple accept="image/*,.pdf">
+                        </div>
+                        <div class="file-list"></div>
+                    </div>
+
+                    <div class="upload-box" data-key="sketchFiles">
+                        <div class="upload-inner">
+                            <span>✏️</span><p>O'lchamlar va chizma rasmi</p>
+                            <small>O'lchamlar yozilgan chizma</small>
+                            <input type="file" multiple accept="image/*,.pdf,.dwg">
+                        </div>
+                        <div class="file-list"></div>
+                    </div>
+
+                    <div class="upload-box" data-key="designFiles">
+                        <div class="upload-inner">
+                            <span>🎨</span><p>Dizayn rasmi</p>
+                            <small>Agar dizayn asosida bo'lsa</small>
+                            <input type="file" multiple accept="image/*,.pdf">
+                        </div>
+                        <div class="file-list"></div>
+                    </div>
+
+                    <div class="upload-box" data-key="matFiles">
+                        <div class="upload-inner">
+                            <span>🔩</span><p>Furnitura va material rasmlari</p>
+                            <small>Bo'lsa yuklang</small>
+                            <input type="file" multiple accept="image/*,.pdf">
+                        </div>
+                        <div class="file-list"></div>
+                    </div>
+                </div>
+                <div class="nav-row">
+                    <button type="button" class="btn-ghost" onclick="goPrev()">← Orqaga</button>
+                    <button type="button" class="btn-primary" onclick="goNext()">Keyingisi →</button>
+                </div>
+            </section>
+
+            <!-- ========== STEP 5: TOPSHIRIQ ========== -->
+            <section class="step" data-step="5">
+                <div class="card glass-card">
+                    <div class="card-header"><span class="card-icon">📩</span><h2>Topshiriq</h2></div>
+
+                    <div class="field">
+                        <label>Qo'shimcha izoh va takliflar</label>
+                        <textarea id="fNotes" rows="4" placeholder="Maxsus talablar, o'lcham cheklovi va boshqa..."></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>Yakunlash muddati</label>
+                        <input type="date" id="fDeadline">
+                    </div>
+
+                    <div class="field toggle-field">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="fUrgent">
+                            <div class="toggle-switch"></div>
+                            <span>🔥 Shoshilinch (+50 000 so'm)</span>
+                        </label>
+                    </div>
+
+                    <div class="field">
+                        <label>To'lov usuli</label>
+                        <div class="chip-group single" id="payGroup">
+                            <button type="button" class="chip" data-val="Click">💳 Click: Uzcard / Humo</button>
+                            <button type="button" class="chip" data-val="Ayirboshlash">🤝 Teng qiymatli ayirboshlash</button>
+                        </div>
+                    </div>
+                    <div class="field" id="barterField" style="display:none">
+                        <label>Ayirboshlash tafsiloti</label>
+                        <textarea id="fBarter" rows="2" placeholder="Nima bilan ayirboshlasiz..."></textarea>
+                    </div>
+                </div>
+
+                <!-- BUYURTMA KARTASI -->
+                <div class="card glass-card summary-card">
+                    <div class="card-header"><span class="card-icon">📋</span><h2>Buyurtma kartasi</h2></div>
+                    <div id="summaryContent"></div>
+                </div>
+
+                <div class="card glass-card send-card">
+                    <p class="send-title">💬 Buyurtmani yuborish</p>
+
+                    <button type="button" class="btn-submit tg-btn" onclick="sendViaTelegram()">
+                        💬 Telegram ga yuborish
+                    </button>
+
+                    <button type="button" class="btn-share" id="shareFilesBtn" onclick="shareFiles()" style="display:none">
+                        📎 Fayllarni ulashish
+                    </button>
+                </div>
+
+                <div class="nav-row">
+                    <button type="button" class="btn-ghost" onclick="goPrev()">← Orqaga</button>
+                    <div></div>
+                </div>
+            </section>
+        </form>
+    </main>
+
+
+
+    <script src="script.js"></script>
 </body>
 </html>
