@@ -1,5 +1,5 @@
 // ===== CONFIGURATION =====
-const BOT_TOKEN = '8641387756:AAHquNwhbeSD2_0aKTAOp58LMKmnT5c3-ZY';
+const BOT_TOKEN = '8353264846:AAHlGhCK7z7iNG8cwOCt6Sff6gDEcr3VSvM';
 const ADMIN_CHAT_ID = '7548673584';
 const tg = window.Telegram?.WebApp;
 
