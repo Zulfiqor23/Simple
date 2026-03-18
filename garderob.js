@@ -30,16 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Phone Formatting
     const phoneInput = document.getElementById('formPhone');
     phoneInput.addEventListener('input', (e) => {
-        let val = e.target.value.replace(/\D/g, ''); // digit only
+        let cursor = e.target.selectionStart;
+        let oldVal = e.target.value;
+        let val = e.target.value.replace(/\D/g, ''); 
+        
         if (!val.startsWith('998')) val = '998' + val;
-        val = val.slice(0, 12); // max 12 digits
+        val = val.slice(0, 12); 
 
-        let formatted = '+';
-        if (val.length > 0) formatted += val.substring(0, 3); // +998
-        if (val.length > 3) formatted += ' ' + val.substring(3, 5); // 90
-        if (val.length > 5) formatted += ' ' + val.substring(5, 8); // 123
-        if (val.length > 8) formatted += '-' + val.substring(8, 10); // 45
-        if (val.length > 10) formatted += '-' + val.substring(10, 12); // 67
+        let formatted = '+998';
+        if (val.length > 3) formatted += ' ' + val.substring(3, 5); 
+        if (val.length > 5) formatted += ' ' + val.substring(5, 8); 
+        if (val.length > 8) formatted += '-' + val.substring(8, 10); 
+        if (val.length > 10) formatted += '-' + val.substring(10, 12); 
         
         e.target.value = formatted;
         localStorage.setItem('garderob_cust_phone', formatted);
@@ -191,9 +193,11 @@ async function handleOrderSubmit() {
         message += `📞 <b>Tel:</b> ${escapeHTML(phone)}\n`;
         
         const senderUser = tg?.initDataUnsafe?.user;
+        const senderId = senderUser?.id;
+
         if (senderUser) {
             const contactLabel = senderUser.username ? `@${senderUser.username}` : (senderUser.first_name || "Mijoz");
-            message += `🔹 <b>Telegram:</b> <a href="tg://user?id=${senderUser.id}">${escapeHTML(contactLabel)}</a>\n`;
+            message += `🔹 <b>Telegram:</b> <a href="tg://user?id=${senderId}">${escapeHTML(contactLabel)}</a>\n`;
         }
         
         message += `\n📦 <b>Buyurtma tarkibi:</b>\n`;
@@ -203,45 +207,46 @@ async function handleOrderSubmit() {
         
         message += `\n💰 <b>JAMI: ${total.toLocaleString()} so'm</b>`;
 
-        // Send to Admin
-        const adminRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: ADMIN_CHAT_ID,
-                text: message,
-                parse_mode: 'HTML'
-            })
-        });
-
-        if (!adminRes.ok) {
-            const errData = await adminRes.json();
-            throw new Error(`Telegram Error: ${errData.description || adminRes.statusText}`);
-        }
-
-        // Send to User
-        const senderId = tg?.initDataUnsafe?.user?.id;
-        if (senderId) {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        // Send function with individual error handling
+        const sendToId = async (id, label) => {
+            if (!id) return false;
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: senderId,
-                    text: `✅ <b>Buyurtmangiz qabul qilindi!</b>\n\nID: ${orderId}\nTez orada operatorlarimiz siz bilan bog'lanishadi.`,
-                    parse_mode: 'HTML'
-                })
+                body: JSON.stringify({ chat_id: id, text: message, parse_mode: 'HTML' })
             });
-        }
+            if (!res.ok) {
+                const err = await res.json();
+                console.error(`Failed to send to ${label}:`, err);
+                return err.description;
+            }
+            return true;
+        };
 
-        // Success
-        cart = [];
-        saveCart();
-        updateCartUI();
-        document.body.classList.remove('cart-open');
+        // Try Admin
+        const adminStatus = await sendToId(ADMIN_CHAT_ID, "Admin");
         
-        alert("Buyurtmangiz muvaffaqiyatli yuborildi!");
-        
-        if (tg) tg.close();
+        // Try Sender fallback
+        const senderStatus = await sendToId(senderId, "Sender");
+
+        if (adminStatus === true || senderStatus === true) {
+            // Success if at least one reached
+            cart = [];
+            saveCart();
+            updateCartUI();
+            document.body.classList.remove('cart-open');
+            alert("✅ Buyurtmangiz muvaffaqiyatli yuborildi!");
+            if (tg) tg.close();
+        } else {
+            // Both failed
+            let errMsg = "Xatolik: Buyurtma yuborilmadi.";
+            if (adminStatus.includes("chat not found")) {
+                errMsg = "❌ Bot sizni topa olmadi.\nIltimos, botga kirib /start tugmasini bosing va qayta urinib ko'ring.";
+            } else {
+                errMsg += "\nSizning ID: " + (senderId || "Noma'lum");
+            }
+            alert(errMsg);
+        }
 
     } catch (err) {
         console.error(err);
