@@ -218,8 +218,8 @@ tg.expand(); // Opens web app in full height
 
 // DIIQQAT: Shu yerda O'z bot tokeningizni va lichka (Chat ID) ni yozasiz!
 // Bularni faqat siz bilasiz, xavfsiz holatda.
-const BOT_TOKEN = 'SIZNING_BOT_TOKEN_SHU_ERDA'; 
-const ADMIN_CHAT_ID = 'SIZNING_CHAT_ID_SHU_ERDA'; // @userinfobot dan olasiz
+const BOT_TOKEN = '8641387756:AAHquNwhbeSD2_0aKTAOp58LMKmnT5c3-ZY'; 
+const ADMIN_CHAT_ID = '7548673584'; // @userinfobot dan olasiz
 
 // ===== MAIN BUTTON INIT =====
 tg.MainButton.text = "✅ Buyurtmani Yuborish";
@@ -242,7 +242,7 @@ showStep = function(n) {
 document.getElementById('orderForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    if(BOT_TOKEN === 'SIZNING_BOT_TOKEN_SHU_ERDA') {
+    if(!BOT_TOKEN || BOT_TOKEN === 'SIZNING_BOT_TOKEN_SHU_ERDA') {
         alert("Iltimos, avval script.js ichida BOT_TOKEN va ADMIN_CHAT_ID ni o'zgartiring!");
         return;
     }
