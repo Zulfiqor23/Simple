@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garderob Modullari - Bazis Proyekt</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-dark: #111827;
+            --accent: #008B8B;
+            --glass: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        .catalog-header {
+            padding: 24px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .catalog-title h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .catalog-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .cart-trigger {
+            position: relative;
+            background: var(--primary-dark);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .cart-trigger:active { transform: scale(0.9); }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (min-width: 640px) {
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .module-image {
+            width: 100%;
+            height: 240px;
+            background: #f9fafb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .module-card:hover .module-image img {
+            transform: scale(1.05);
+        }
+
+        .module-info {
+            padding: 20px;
+        }
+
+        .module-tag {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .module-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .module-desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .module-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .module-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .module-price span {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .add-btn {
+            background: #f3f4f6;
+            color: var(--primary-dark);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .add-btn:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* Cart Overlay */
+        #cartOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #cartSidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-open #cartOverlay { display: block; opacity: 1; }
+        .cart-open #cartSidebar { transform: translateX(0); }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f9fafb;
+        }
+
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+        .cart-item-price { font-size: 13px; color: var(--accent); font-weight: 800; }
+        
+        .cart-footer {
+            padding: 20px;
+            background: #f9fafb;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .total-label { font-size: 14px; color: #6b7280; font-weight: 600; }
+        .total-value { font-size: 20px; font-weight: 800; color: var(--primary-dark); }
+
+        .submit-order-btn {
+            width: 100%;
+            background: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .submit-order-btn:hover { background: #000; }
+        .submit-order-btn:active { transform: scale(0.98); }
+
+        /* Animation */
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .module-card { animation: slideUp 0.5s ease backwards; }
+    </style>
+</head>
+<body>
+    <div class="catalog-header">
+        <div class="catalog-title">
+            <h1>Garderob Modullari</h1>
+            <p>Premium toifadagi tanlovlar</p>
+        </div>
+        <button class="cart-trigger" id="openCartBtn">
+            <i data-lucide="shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+        </button>
+    </div>
+
+    <div class="catalog-grid" id="catalogGrid">
+        <!-- Modules will be injected here -->
+    </div>
+
+    <!-- User Contact Section (Fixed at bottom or inside cart) -->
+    <div id="contactForm" style="display:none; padding: 20px; background: white; margin: 20px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <h3 style="font-weight: 800; margin-bottom: 15px;">Aloqa ma'lumotlari</h3>
+        <input type="text" id="custName" placeholder="Ismingiz" style="width:100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; margin-bottom: 10px; font-family: inherit;">
+        <input type="tel" id="custPhone" placeholder="+998" value="+998" style="width:100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; font-family: inherit;">
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartOverlay"></div>
+    <div id="cartSidebar">
+        <div class="cart-header">
+            <h2 style="font-weight: 800; margin: 0;">Sizning savatingiz</h2>
+            <button id="closeCartBtn" style="background: none; border: none; color: #9ca3af;"><i data-lucide="x"></i></button>
+        </div>
+        <div class="cart-items" id="cartItemsList">
+            <!-- Cart items will be injected here -->
+        </div>
+        <div id="cartFormInside" style="padding: 20px; border-top: 1px solid #f3f4f6;">
+             <input type="text" id="formName" placeholder="Ismingiz" style="width:100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; margin-bottom: 10px;">
+             <input type="tel" id="formPhone" placeholder="+998" value="+998" style="width:100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px;">
+        </div>
+        <div class="cart-footer">
+            <div class="total-row">
+                <span class="total-label">Jami summa:</span>
+                <span class="total-value" id="cartTotalSum">0 so'm</span>
+            </div>
+            <button class="submit-order-btn" id="sendOrderBtn">
+                <i data-lucide="send"></i>
+                Buyurtmani tasdiqlash
+            </button>
+        </div>
+    </div>
+
+    <script src="garderob_data.js"></script>
+    <script src="garderob.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
