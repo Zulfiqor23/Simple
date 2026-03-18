@@ -212,73 +212,128 @@ function getSummaryRows() {
     return rows;
 }
 
-function buildMessageText() {
-    const rows = getSummaryRows();
-    let t = '📐 BAZIS MEBELSHIK — TEXNIK TOPSHIRIQ\n\n';
-    rows.filter(([, v]) => v && v !== '—')
-        .forEach(([l, v]) => t += `${l}: ${v}\n`);
-    const notes = document.getElementById('fNotes').value;
-    if (notes) t += `\nIzoh: ${notes}`;
-    const barter = document.getElementById('fBarter')?.value;
-    if (barter) t += `\nAyirboshlash: ${barter}`;
+// ===== TELEGRAM WEB APP INIT =====
+const tg = window.Telegram.WebApp;
+tg.expand(); // Opens web app in full height
 
-    // File info
-    const fileCount = getAllFiles().length;
-    if (fileCount > 0) {
-        t += `\n\n📎 ${fileCount} ta fayl ilova qilingan (alohida yuboriladi)`;
+// DIIQQAT: Shu yerda O'z bot tokeningizni va lichka (Chat ID) ni yozasiz!
+// Bularni faqat siz bilasiz, xavfsiz holatda.
+const BOT_TOKEN = 'SIZNING_BOT_TOKEN_SHU_ERDA'; 
+const ADMIN_CHAT_ID = 'SIZNING_CHAT_ID_SHU_ERDA'; // @userinfobot dan olasiz
+
+// ===== MAIN BUTTON INIT =====
+tg.MainButton.text = "✅ Buyurtmani Yuborish";
+tg.MainButton.onClick(() => {
+    document.getElementById('submitBtn').click();
+});
+
+// Show main button on step 5
+const originalShowStep = showStep;
+showStep = function(n) {
+    originalShowStep(n);
+    if (n === TOTAL_STEPS) {
+        tg.MainButton.show();
+    } else {
+        tg.MainButton.hide();
     }
-    return t;
-}
+};
 
-// ===== SEND VIA TELEGRAM DEEP LINK =====
-function sendViaTelegram() {
-    // Save to localStorage backup
-    saveToLocal();
-
-    // Build the message text
-    const text = buildMessageText();
-
-    // Open Telegram deep link
-    // This will: 1) Open in browser  2) Browser asks to open Telegram app  3) Opens chat with pre-filled message
-    const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`;
-    window.open(tgUrl, '_blank');
-}
-
-// ===== SHARE FILES VIA WEB SHARE API =====
-async function shareFiles() {
-    const files = getAllFiles();
-    if (files.length === 0) {
-        alert("Hech qanday fayl yuklanmagan");
+// ===== SEND TO BOT DIRECLTY =====
+document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    if(BOT_TOKEN === 'SIZNING_BOT_TOKEN_SHU_ERDA') {
+        alert("Iltimos, avval script.js ichida BOT_TOKEN va ADMIN_CHAT_ID ni o'zgartiring!");
         return;
     }
 
-    // Check if Web Share API with files is supported
-    if (navigator.canShare && navigator.canShare({ files })) {
-        try {
-            await navigator.share({
-                title: 'Bazis Mebelshik — Fayllar',
-                text: `📐 Texnik topshiriq fayllari (${files.length} ta)`,
-                files: files
-            });
-        } catch (err) {
-            if (err.name !== 'AbortError') {
-                console.error('Share xatosi:', err);
-                fallbackFileShare();
-            }
-        }
-    } else {
-        // Fallback for devices that don't support file sharing
-        fallbackFileShare();
-    }
-}
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnLoading = document.getElementById('btnLoading');
+    const progressDiv = document.getElementById('sendProgress');
+    const progressFill = document.getElementById('sendProgressFill');
+    const statusText = document.getElementById('sendStatus');
 
-function fallbackFileShare() {
-    // If Web Share API not supported, try sharing just text via Telegram
-    const text = `📎 Fayllar alohida yuboriladi. Jami: ${getAllFiles().length} ta fayl.`;
-    const tgUrl = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`;
-    window.open(tgUrl, '_blank');
-    alert("📱 Fayllarni Telegram chatga qo'lda yuklang.\nTelegram ochilgandan keyin 📎 tugmasini bosing.");
-}
+    btn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline';
+    progressDiv.style.display = 'block';
+    
+    tg.MainButton.showProgress();
+
+    const allFiles = getAllFiles();
+    const totalSteps = 1 + allFiles.length; 
+    let stepsDone = 0;
+
+    function updateProgress(msg) {
+        stepsDone++;
+        const pct = Math.round((stepsDone / totalSteps) * 100);
+        progressFill.style.width = pct + '%';
+        statusText.textContent = msg;
+    }
+
+    try {
+        statusText.textContent = '📤 Buyurtma matni yuborilmoqda...';
+        const text = buildMessageText();
+        
+        const msgRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: ADMIN_CHAT_ID,
+                text: text,
+                parse_mode: 'HTML'
+            })
+        });
+        
+        if (!msgRes.ok) throw new Error('Matn yuborilmadi, Chat ID yoki Token xato bo\'lishi mumkin.');
+        updateProgress('✅ Matn yuborildi');
+
+        for (let i = 0; i < allFiles.length; i++) {
+            const f = allFiles[i];
+            statusText.textContent = `📎 Fayl yuborilmoqda: ${f.name} (${i + 1}/${allFiles.length})...`;
+
+            const formData = new FormData();
+            formData.append('chat_id', ADMIN_CHAT_ID);
+            formData.append('caption', `📎 Fayl: ${f.name}`);
+            
+            let endpoint = f.type.startsWith('image/') ? 'sendPhoto' : 'sendDocument';
+            if(endpoint === 'sendPhoto') formData.append('photo', f);
+            else formData.append('document', f);
+
+            const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!fileRes.ok) console.warn(`Fayl yuborishda xato: ${f.name}`);
+            updateProgress(`✅ ${f.name} yuborildi`);
+        }
+
+        progressFill.style.width = '100%';
+        statusText.textContent = '🎉 Muvaffaqiyatli yuborildi!';
+        statusText.style.color = '#00b894';
+        
+        saveToLocal();
+        
+        // Bot ilovasini yopish
+        setTimeout(() => {
+            tg.close();
+        }, 2000);
+
+    } catch (err) {
+        console.error('Xato:', err);
+        statusText.textContent = `❌ Xato: ${err.message}`;
+        statusText.style.color = '#e74c3c';
+        tg.MainButton.hideProgress();
+    } finally {
+        setTimeout(() => {
+            btn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+        }, 3000);
+    }
+});
 
 // ===== SAVE TO LOCAL =====
 function saveToLocal() {
