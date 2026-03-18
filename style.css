@@ -366,3 +366,8 @@ textarea{resize:vertical}
 @media(min-width:481px){
     body{border-left:1px solid rgba(9,132,227,0.08);border-right:1px solid rgba(9,132,227,0.08)}
 }
+
+/* Lucide Icons */
+.lucide { width: 1.25em; height: 1.25em; stroke-width: 2; vertical-align: middle; margin-right: 6px; }
+.lucide-spin { animation: spin 2s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }

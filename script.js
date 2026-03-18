@@ -78,8 +78,9 @@ document.querySelectorAll('.chip-group').forEach(group => {
     group.querySelectorAll('.chip').forEach(chip => {
         chip.addEventListener('click', () => {
             if (isSingle) {
+                const wasSelected = chip.classList.contains('selected');
                 group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-                chip.classList.toggle('selected');
+                if (!wasSelected) chip.classList.add('selected');
             } else {
                 chip.classList.toggle('selected');
             }
@@ -215,6 +216,14 @@ function getSummaryRows() {
 function buildMessageText() {
     const rows = getSummaryRows();
     let t = '📐 BAZIS MEBELSHIK — TEXNIK TOPSHIRIQ\n\n';
+    
+    const u = window.Telegram?.WebApp?.initDataUnsafe?.user;
+    if (u) {
+        const name = u.first_name + (u.last_name ? ' ' + u.last_name : '');
+        const contact = u.username ? `@${u.username}` : name;
+        t += `🧑‍💼 Kontakt (TG): <a href="tg://user?id=${u.id}">${contact}</a>\n\n`;
+    }
+
     rows.filter(([, v]) => v && v !== '—')
         .forEach(([l, v]) => t += `${l}: ${v}\n`);
     const notes = document.getElementById('fNotes').value;
@@ -305,27 +314,88 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
         });
         
         if (!msgRes.ok) throw new Error('Matn yuborilmadi, Chat ID yoki Token xato bo\'lishi mumkin.');
+        
+        // Yuboruvchining o'ziga ham xabar yuborish (Task 1)
+        const senderChatId = tg.initDataUnsafe?.user?.id;
+        if (senderChatId) {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: senderChatId,
+                    text: "Sizning buyurtmangiz qabul qilindi ⬇️\n\n" + text,
+                    parse_mode: 'HTML'
+                })
+            });
+        }
+        
         updateProgress('✅ Matn yuborildi');
 
-        for (let i = 0; i < allFiles.length; i++) {
-            const f = allFiles[i];
-            statusText.textContent = `📎 Fayl yuborilmoqda: ${f.name} (${i + 1}/${allFiles.length})...`;
+        // Buyurtma raqami yaratish (masalan: telefon raqam oxiri + vaqt)
+        const orderId = 'ORD-' + Date.now().toString().slice(-6);
 
-            const formData = new FormData();
-            formData.append('chat_id', ADMIN_CHAT_ID);
-            formData.append('caption', `📎 Fayl: ${f.name}`);
+        // Google Apps Script orqali Drive ga fayllarni yuklash (Task 2)
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8XCbhqf7MBImCkS36JZlki6wYJACt-42CiE6yp8_3Cf4SR0xfrZMLZjszoP04bovgZQ/exec";
+
+        if (allFiles.length > 0 && GAS_WEB_APP_URL !== "SIZNING_GOOGLE_SCRIPT_WEB_APP_URL") {
+            statusText.textContent = `📎 Fayllar Google Drive'ga yuklanmoqda... (Kuting)`;
             
-            let endpoint = f.type.startsWith('image/') ? 'sendPhoto' : 'sendDocument';
-            if(endpoint === 'sendPhoto') formData.append('photo', f);
-            else formData.append('document', f);
-
-            const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`, {
-                method: 'POST',
-                body: formData
+            // Fayllarni Base64 ga o'tkazish
+            const filePromises = allFiles.map(f => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve({
+                        name: f.name,
+                        mimeType: f.type || 'application/octet-stream',
+                        base64: reader.result.split(',')[1]
+                    });
+                    reader.readAsDataURL(f);
+                });
             });
+            
+            const base64Files = await Promise.all(filePromises);
+            
+            const driveRes = await fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                // Mode no-cors can be used if CORS issues happen, but we want to read JSON response.
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8' // GAS prefers text/plain for CORS
+                },
+                body: JSON.stringify({
+                    orderId: orderId,
+                    files: base64Files
+                })
+            });
+            
+            if (driveRes.ok) {
+                 updateProgress(`✅ Barcha fayllar Drive'ga yuklandi`);
+                 // Papka havolasini yuborish o'chirib tashlandi (shart emas)
+            } else {
+                 console.warn("Google Drive ga yuklashda xatolik");
+                 updateProgress(`⚠️ Fayllar qo'shilmadi (Drive xatosi)`);
+            }
+        } else if (allFiles.length > 0) {
+            // Eskicha botga jo'natish (agar GAS URL kiritilmagan bo'lsa zaxira variant)
+            for (let i = 0; i < allFiles.length; i++) {
+                const f = allFiles[i];
+                statusText.textContent = `📎 Fayl yuborilmoqda: ${f.name} (${i + 1}/${allFiles.length})...`;
 
-            if (!fileRes.ok) console.warn(`Fayl yuborishda xato: ${f.name}`);
-            updateProgress(`✅ ${f.name} yuborildi`);
+                const formData = new FormData();
+                formData.append('chat_id', ADMIN_CHAT_ID);
+                formData.append('caption', `📎 Fayl: ${f.name}`);
+                
+                let endpoint = f.type.startsWith('image/') ? 'sendPhoto' : 'sendDocument';
+                if(endpoint === 'sendPhoto') formData.append('photo', f);
+                else formData.append('document', f);
+
+                const fileRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!fileRes.ok) console.warn(`Fayl yuborishda xato: ${f.name}`);
+                updateProgress(`✅ ${f.name} yuborildi`);
+            }
         }
 
         progressFill.style.width = '100%';
@@ -374,3 +444,4 @@ function saveToLocal() {
 
 // ===== INIT =====
 showStep(1);
+if(window.lucide) lucide.createIcons();

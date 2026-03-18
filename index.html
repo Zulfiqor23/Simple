@@ -9,13 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <!-- Header -->
     <header class="app-header">
         <div class="header-bg"></div>
         <div class="header-content">
-            <div class="logo-icon">📐</div>
+            <div class="logo-icon"><i data-lucide="ruler"></i></div>
             <h1>Bazis Mebelshik</h1>
             <p class="header-sub">Texnik Topshiriqlarni to'ldirish</p>
         </div>
@@ -46,7 +47,7 @@
             <!-- ========== STEP 1: BUYURTMACHI ========== -->
             <section class="step active" data-step="1">
                 <div class="card glass-card">
-                    <div class="card-header"><span class="card-icon">👤</span><h2>Buyurtmachi ma'lumotlari</h2></div>
+                    <div class="card-header"><span class="card-icon"><i data-lucide="user"></i></span><h2>Buyurtmachi ma'lumotlari</h2></div>
                     <div class="field">
                         <label>Ism, Familiya <span class="req">*</span></label>
                         <input type="text" id="fName" placeholder="Ismingizni kiriting" required>
@@ -57,20 +58,32 @@
                     </div>
                     <div class="field">
                         <label>Buyurtmadagi ro'li</label>
-                        <div class="chip-group" id="roleGroup">
-                            <button type="button" class="chip" data-val="Dizayner">🎨 Dizayner</button>
-                            <button type="button" class="chip" data-val="Mebelchi">🪑 Mebelchi</button>
-                            <button type="button" class="chip" data-val="Prorap">👷 Prorap</button>
-                            <button type="button" class="chip" data-val="Boshqa">📋 Boshqa</button>
+                        <div class="chip-group single" id="roleGroup">
+                            <button type="button" class="chip" data-val="Dizayner">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                                Dizayner
+                            </button>
+                            <button type="button" class="chip" data-val="Mebelchi">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                                Mebelchi
+                            </button>
+                            <button type="button" class="chip" data-val="Prorap">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M12 2v7"/><path d="M8 22v-6c0-2.2 1.8-4 4-4s4 1.8 4 4v6"/><path d="M8 9h8"/><path d="M4 22v-2c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v2"/></svg>
+                                Prorap
+                            </button>
+                            <button type="button" class="chip" data-val="Boshqa">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+                                Boshqa
+                            </button>
                         </div>
                     </div>
                     <div class="field">
                         <label>Mebel borasida tushunchasi</label>
                         <div class="chip-group single" id="levelGroup">
-                            <button type="button" class="chip" data-val="Tushunmayman">😕 Tushunmayman</button>
-                            <button type="button" class="chip" data-val="Dizayner">🎨 Dizayner darajasida</button>
-                            <button type="button" class="chip" data-val="Ustanovshik">🔧 Ustanovshik darajasida</button>
-                            <button type="button" class="chip" data-val="Konstruktor">📐 Konstruktor darajasida</button>
+                            <button type="button" class="chip" data-val="Tushunmayman"><i data-lucide="frown"></i> Tushunmayman</button>
+                            <button type="button" class="chip" data-val="Dizayner"><i data-lucide="palette"></i> Dizayner darajasida</button>
+                            <button type="button" class="chip" data-val="Ustanovshik"><i data-lucide="wrench"></i> Ustanovshik darajasida</button>
+                            <button type="button" class="chip" data-val="Konstruktor"><i data-lucide="ruler"></i> Konstruktor darajasida</button>
                         </div>
                     </div>
                 </div>
@@ -80,23 +93,23 @@
             <!-- ========== STEP 2: LOYIHA ========== -->
             <section class="step" data-step="2">
                 <div class="card glass-card">
-                    <div class="card-header"><span class="card-icon">🪑</span><h2>Loyiha</h2></div>
+                    <div class="card-header"><span class="card-icon"><i data-lucide="armchair"></i></span><h2>Loyiha</h2></div>
                     <div class="field">
                         <label>Mebel turi <span class="req">*</span></label>
                         <div class="chip-group multi" id="mebelTypeGroup">
-                            <button type="button" class="chip" data-val="Krovat">🛏️ Krovat</button>
-                            <button type="button" class="chip" data-val="Oshxona">🍳 Oshxona</button>
-                            <button type="button" class="chip" data-val="Shkaf">🚪 Shkaf</button>
-                            <button type="button" class="chip" data-val="Tryumo">🪞 Tryumo</button>
-                            <button type="button" class="chip" data-val="Komod">🗄️ Komod</button>
-                            <button type="button" class="chip" data-val="Dekorativ panel">🖼️ Dekor panel</button>
-                            <button type="button" class="chip" data-val="Parta">📚 Parta</button>
+                            <button type="button" class="chip" data-val="Krovat"><i data-lucide="bed-double"></i> Krovat</button>
+                            <button type="button" class="chip" data-val="Oshxona"><i data-lucide="chef-hat"></i> Oshxona</button>
+                            <button type="button" class="chip" data-val="Shkaf"><i data-lucide="door-open"></i> Shkaf</button>
+                            <button type="button" class="chip" data-val="Tryumo"><i data-lucide="rectangle-vertical"></i> Tryumo</button>
+                            <button type="button" class="chip" data-val="Komod"><i data-lucide="archive"></i> Komod</button>
+                            <button type="button" class="chip" data-val="Dekorativ panel"><i data-lucide="image"></i> Dekor panel</button>
+                            <button type="button" class="chip" data-val="Parta"><i data-lucide="book-open"></i> Parta</button>
                         </div>
                     </div>
                     <div class="field">
                         <label>Buyurtma turi</label>
                         <div class="chip-group single" id="orderTypeGroup">
-                            <button type="button" class="chip" data-val="Individual">👤 Individual (yakka shaxs)</button>
+                            <button type="button" class="chip" data-val="Individual"><i data-lucide="user"></i> Individual (yakka shaxs)</button>
                             <button type="button" class="chip" data-val="Konveyr">🏭 Konveyr ishlab chiqarish</button>
                             <button type="button" class="chip" data-val="3D loyiha">🎮 3D loyiha uchun</button>
                         </div>
@@ -104,10 +117,10 @@
                     <div class="field">
                         <label>Natija (bir nechtasini tanlash mumkin)</label>
                         <div class="chip-group multi price-chips" id="resultGroup">
-                            <button type="button" class="chip" data-val="Bazis model"><span>📐 Bazis model</span><small>13 000 so'm/kv.m</small></button>
-                            <button type="button" class="chip" data-val="Smeta"><span>📄 Smeta hujjatlari</span><small>2 000 so'm/kv.m</small></button>
-                            <button type="button" class="chip" data-val="3D dizayn"><span>🎨 3D dizayn</span><small>1 000 so'm/kv.m</small></button>
-                            <button type="button" class="chip" data-val="KDT fayllar"><span>🖥️ KDT stanok fayllar</span><small>1 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="Bazis model"><span><i data-lucide="ruler"></i> Bazis model</span><small>13 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="Smeta"><span><i data-lucide="file-text"></i> Smeta hujjatlari</span><small>2 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="3D dizayn"><span><i data-lucide="palette"></i> 3D dizayn</span><small>1 000 so'm/kv.m</small></button>
+                            <button type="button" class="chip" data-val="KDT fayllar"><span><i data-lucide="monitor-play"></i> KDT stanok fayllar</span><small>1 000 so'm/kv.m</small></button>
                         </div>
                     </div>
                 </div>
@@ -120,7 +133,7 @@
             <!-- ========== STEP 3: TAFSILOTLAR ========== -->
             <section class="step" data-step="3">
                 <div class="card glass-card">
-                    <div class="card-header"><span class="card-icon">⚙️</span><h2>Tafsilotlar</h2></div>
+                    <div class="card-header"><span class="card-icon"><i data-lucide="settings"></i></span><h2>Tafsilotlar</h2></div>
 
                     <div class="field">
                         <label>Korpus / Fasad materiali</label>
@@ -135,36 +148,36 @@
 
                     <!-- Conditional: Dekorativ panel -->
                     <div class="field cond-field" id="condDekor" style="display:none">
-                        <label>🖼️ Dekorativ panel materiali</label>
+                        <label><i data-lucide="image"></i> Dekorativ panel materiali</label>
                         <input type="text" id="fDekorMat" placeholder="Dekorativ panel materiali...">
                     </div>
 
                     <!-- Conditional: Oshxona - Stoleshnitsa -->
                     <div class="field cond-field" id="condStol" style="display:none">
-                        <label>🍳 Stoleshnitsa turi</label>
+                        <label><i data-lucide="chef-hat"></i> Stoleshnitsa turi</label>
                         <input type="text" id="fStolType" placeholder="Stoleshnitsa turi va qalinligi...">
                     </div>
 
                     <div class="field">
                         <label>Kromka turi</label>
                         <div class="chip-group single" id="kromkaGroup">
-                            <button type="button" class="chip" data-val="Kromka bor">✅ Kromka bor</button>
-                            <button type="button" class="chip" data-val="Kromka yo'q">❌ Kromka yo'q</button>
+                            <button type="button" class="chip" data-val="Kromka bor"><i data-lucide="check-circle-2"></i> Kromka bor</button>
+                            <button type="button" class="chip" data-val="Kromka yo'q"><i data-lucide="x-circle"></i> Kromka yo'q</button>
                         </div>
                     </div>
                     <div class="field" id="kromkaStyleField" style="display:none">
                         <label>Kromka bosish usuli</label>
                         <div class="chip-group single" id="kromkaStyleGroup">
-                            <button type="button" class="chip" data-val="Ko'rinadigan tomon">👁️ Faqat ko'rinadigan tomon</button>
-                            <button type="button" class="chip" data-val="Standart">📏 Standartga muvofiq</button>
+                            <button type="button" class="chip" data-val="Ko'rinadigan tomon"><i data-lucide="eye"></i> Faqat ko'rinadigan tomon</button>
+                            <button type="button" class="chip" data-val="Standart"><i data-lucide="ruler-horizontal"></i> Standartga muvofiq</button>
                         </div>
                     </div>
 
                     <div class="field">
                         <label>Mahkamlovchi furnitura</label>
                         <div class="chip-group single" id="fastenerGroup">
-                            <button type="button" class="chip" data-val="Yevrovint">🔩 Yevrovint</button>
-                            <button type="button" class="chip" data-val="Ekssentrik shkant">⚙️ Ekssentrik shkant</button>
+                            <button type="button" class="chip" data-val="Yevrovint"><i data-lucide="nut"></i> Yevrovint</button>
+                            <button type="button" class="chip" data-val="Ekssentrik shkant"><i data-lucide="settings"></i> Ekssentrik shkant</button>
                         </div>
                     </div>
 
@@ -187,13 +200,13 @@
 
                     <!-- Conditional: Krovat -->
                     <div class="field cond-field" id="condMatras" style="display:none">
-                        <label>🛏️ Matras o'lchami</label>
+                        <label><i data-lucide="bed-double"></i> Matras o'lchami</label>
                         <input type="text" id="fMatras" placeholder="Masalan: 160x200, 180x200...">
                     </div>
 
                     <!-- Conditional: Oshxona - devorga osish -->
                     <div class="field cond-field" id="condDevor" style="display:none">
-                        <label>🍳 Devorga osish usuli</label>
+                        <label><i data-lucide="chef-hat"></i> Devorga osish usuli</label>
                         <input type="text" id="fDevor" placeholder="Masalan: shin reyka, dubel anker...">
                     </div>
 
@@ -215,11 +228,11 @@
             <!-- ========== STEP 4: FAYLLAR ========== -->
             <section class="step" data-step="4">
                 <div class="card glass-card">
-                    <div class="card-header"><span class="card-icon">📎</span><h2>Fayllar yuklash</h2></div>
+                    <div class="card-header"><span class="card-icon"><i data-lucide="paperclip"></i></span><h2>Fayllar yuklash</h2></div>
 
                     <div class="upload-box" data-key="roomPhotos">
                         <div class="upload-inner">
-                            <span>📸</span><p>Xona rasmi</p>
+                            <span><i data-lucide="camera"></i></span><p>Xona rasmi</p>
                             <small>Rasmni tanlang yoki tashlang</small>
                             <input type="file" multiple accept="image/*,.pdf">
                         </div>
@@ -228,7 +241,7 @@
 
                     <div class="upload-box" data-key="sketchFiles">
                         <div class="upload-inner">
-                            <span>✏️</span><p>O'lchamlar va chizma rasmi</p>
+                            <span><i data-lucide="pencil"></i></span><p>O'lchamlar va chizma rasmi</p>
                             <small>O'lchamlar yozilgan chizma</small>
                             <input type="file" multiple accept="image/*,.pdf,.dwg">
                         </div>
@@ -237,7 +250,7 @@
 
                     <div class="upload-box" data-key="designFiles">
                         <div class="upload-inner">
-                            <span>🎨</span><p>Dizayn rasmi</p>
+                            <span><i data-lucide="palette"></i></span><p>Dizayn rasmi</p>
                             <small>Agar dizayn asosida bo'lsa</small>
                             <input type="file" multiple accept="image/*,.pdf">
                         </div>
@@ -246,7 +259,7 @@
 
                     <div class="upload-box" data-key="matFiles">
                         <div class="upload-inner">
-                            <span>🔩</span><p>Furnitura va material rasmlari</p>
+                            <span><i data-lucide="nut"></i></span><p>Furnitura va material rasmlari</p>
                             <small>Bo'lsa yuklang</small>
                             <input type="file" multiple accept="image/*,.pdf">
                         </div>
@@ -262,7 +275,7 @@
             <!-- ========== STEP 5: TOPSHIRIQ ========== -->
             <section class="step" data-step="5">
                 <div class="card glass-card">
-                    <div class="card-header"><span class="card-icon">📩</span><h2>Topshiriq</h2></div>
+                    <div class="card-header"><span class="card-icon"><i data-lucide="mail"></i></span><h2>Topshiriq</h2></div>
 
                     <div class="field">
                         <label>Qo'shimcha izoh va takliflar</label>
@@ -278,15 +291,15 @@
                         <label class="toggle-label">
                             <input type="checkbox" id="fUrgent">
                             <div class="toggle-switch"></div>
-                            <span>🔥 Shoshilinch (+50 000 so'm)</span>
+                            <span><i data-lucide="flame"></i> Shoshilinch (+50 000 so'm)</span>
                         </label>
                     </div>
 
                     <div class="field">
                         <label>To'lov usuli</label>
                         <div class="chip-group single" id="payGroup">
-                            <button type="button" class="chip" data-val="Click">💳 Click: Uzcard / Humo</button>
-                            <button type="button" class="chip" data-val="Ayirboshlash">🤝 Teng qiymatli ayirboshlash</button>
+                            <button type="button" class="chip" data-val="Click"><i data-lucide="credit-card"></i> Click: Uzcard / Humo</button>
+                            <button type="button" class="chip" data-val="Ayirboshlash"><i data-lucide="users"></i> Teng qiymatli ayirboshlash</button>
                         </div>
                     </div>
                     <div class="field" id="barterField" style="display:none">
@@ -297,12 +310,12 @@
 
                 <!-- BUYURTMA KARTASI -->
                 <div class="card glass-card summary-card">
-                    <div class="card-header"><span class="card-icon">📋</span><h2>Buyurtma kartasi</h2></div>
+                    <div class="card-header"><span class="card-icon"><i data-lucide="clipboard-list"></i></span><h2>Buyurtma kartasi</h2></div>
                     <div id="summaryContent"></div>
                 </div>
 
                 <div class="card glass-card send-card">
-                    <p class="send-title">💬 Buyurtmani yuborish</p>
+                    <p class="send-title"><i data-lucide="message-square"></i> Buyurtmani yuborish</p>
                     <p class="send-desc">Buyurtma va fayllar to'g'ridan-to'g'ri bo'limga yuboriladi</p>
 
                     <!-- Sending progress -->
@@ -312,8 +325,8 @@
                     </div>
 
                     <button type="submit" class="btn-submit" id="submitBtn">
-                        <span id="btnText">✅ Bot orqali yuborish</span>
-                        <span id="btnLoading" style="display:none">⏳ Yuborilmoqda...</span>
+                        <span id="btnText"><i data-lucide="check-circle-2"></i> Bot orqali yuborish</span>
+                        <span id="btnLoading" style="display:none"><i data-lucide="loader-circle" class="lucide-spin"></i> Yuborilmoqda...</span>
                     </button>
                 </div>
 
