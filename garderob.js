@@ -12,12 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tg.ready();
     }
     
-    // Load persisted contact info
-    const savedName = localStorage.getItem('garderob_cust_name');
-    const savedPhone = localStorage.getItem('garderob_cust_phone');
-    if (savedName) document.getElementById('formName').value = savedName;
-    if (savedPhone) document.getElementById('formPhone').value = savedPhone;
-
     renderCatalog();
     updateCartUI();
     
@@ -44,11 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (val.length > 10) formatted += '-' + val.substring(10, 12); 
         
         e.target.value = formatted;
-        localStorage.setItem('garderob_cust_phone', formatted);
     });
 
     document.getElementById('formName').addEventListener('input', (e) => {
-        localStorage.setItem('garderob_cust_name', e.target.value);
+        // No persistence
     });
 });
 
@@ -240,11 +233,13 @@ async function handleOrderSubmit() {
             if (tg) tg.close();
         } else {
             // Both failed
-            let errMsg = "Xatolik: Buyurtma yuborilmadi.";
-            if (adminStatus.includes("chat not found")) {
-                errMsg = "❌ Bot sizni topa olmadi.\nIltimos, botga kirib /start tugmasini bosing va qayta urinib ko'ring.";
-            } else {
-                errMsg += "\nSizning ID: " + (senderId || "Noma'lum");
+            let errMsg = "❌ Buyurtma yuborilmadi.";
+            errMsg += `\nAdmin Status: ${adminStatus}`;
+            errMsg += `\nSender Status: ${senderStatus}`;
+            errMsg += `\nSizning ID: ${senderId || "Noma'lum"}`;
+            
+            if (adminStatus.toString().includes("chat not found")) {
+                errMsg += "\n\n⚠️ Admin botni start qilmagan yoki ID xato!";
             }
             alert(errMsg);
         }
