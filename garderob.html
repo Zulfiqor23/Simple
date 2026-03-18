@@ -333,14 +333,23 @@
     <div id="cartSidebar">
         <div class="cart-header">
             <h2 style="font-weight: 800; margin: 0;">Sizning savatingiz</h2>
-            <button id="closeCartBtn" style="background: none; border: none; color: #9ca3af;"><i data-lucide="x"></i></button>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button onclick="clearCart()" style="background:none; border:none; color:#ef4444; font-size:0.8rem; cursor:pointer;">Tozalash</button>
+                <button id="closeCartBtn" style="background:none; border:none; color:#9ca3af; cursor:pointer;"><i data-lucide="x"></i></button>
+            </div>
         </div>
         <div class="cart-items" id="cartItemsList">
             <!-- Cart items will be injected here -->
         </div>
-        <div id="cartFormInside" style="padding: 20px; border-top: 1px solid #f3f4f6;">
-             <input type="text" id="formName" placeholder="Ismingiz" style="width:100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; margin-bottom: 10px;">
-             <input type="tel" id="formPhone" placeholder="+998" value="+998" style="width:100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px;">
+        <div id="cartFormInside" class="cart-checkout-form">
+             <div class="form-item">
+                 <label>Ismingiz</label>
+                 <input type="text" id="formName" placeholder="Ali Valiyev" autocomplete="name">
+             </div>
+             <div class="form-item">
+                 <label>Telefon raqam</label>
+                 <input type="tel" id="formPhone" placeholder="+998" autocomplete="tel">
+             </div>
         </div>
         <div class="cart-footer">
             <div class="total-row">
@@ -352,6 +361,54 @@
                 Buyurtmani tasdiqlash
             </button>
         </div>
+    </div>
+
+    <style>
+    /* Moved from inline */
+    .cart-checkout-form {
+        padding: 20px; 
+        border-top: 1px solid #f3f4f6;
+    }
+    .form-item {
+        margin-bottom: 12px;
+    }
+    .form-item label {
+        display: block;
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-bottom: 4px;
+        font-weight: 500;
+    }
+    .form-item input {
+        width: 100%; 
+        padding: 12px; 
+        border: 1px solid #e5e7eb; 
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+    }
+    .form-item input:focus {
+        outline: none;
+        border-color: #2563eb;
+    }
+    .clear-btn {
+        background: none; 
+        border: none; 
+        color: #ef4444; 
+        font-size: 0.8rem; 
+        cursor: pointer;
+    }
+    </style>
+
+    <script>
+    function clearCart() {
+        if (confirm("Savatni butunlay tozalamoqchimisiz?")) {
+            cart = [];
+            saveCart();
+            updateCartUI();
+        }
+    }
+    </script>
     </div>
 
     <script src="garderob_data.js"></script>

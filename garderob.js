@@ -3,7 +3,7 @@ const BOT_TOKEN = '8353264846:AAHlGhCK7z7iNG8cwOCt6Sff6gDEcr3VSvM';
 const ADMIN_CHAT_ID = '6690357035';
 const tg = window.Telegram?.WebApp;
 
-let cart = JSON.parse(localStorage.getItem('garderob_cart') || '[]');
+let cart = JSON.parse(sessionStorage.getItem('garderob_cart') || '[]');
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -154,7 +154,7 @@ function removeFromCart(id) {
 }
 
 function saveCart() {
-    localStorage.setItem('garderob_cart', JSON.stringify(cart));
+    sessionStorage.setItem('garderob_cart', JSON.stringify(cart));
 }
 
 // ===== ORDER SUBMISSION =====
